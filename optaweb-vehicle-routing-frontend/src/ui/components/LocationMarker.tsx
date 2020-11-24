@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import '@patternfly/patternfly/patternfly.css';
+import { TextInput } from '@patternfly/react-core';
 import * as L from 'leaflet';
 import * as React from 'react';
-import { Marker, Tooltip } from 'react-leaflet';
+import { Marker, Tooltip, Popup } from 'react-leaflet';
 import { Location } from 'store/route/types';
 
 const homeIcon = L.icon({
@@ -38,35 +40,71 @@ export interface Props {
   removeHandler: (id: number) => void;
 }
 
-const LocationMarker: React.FC<Props> = ({
-  location,
-  isDepot,
-  isSelected,
-  removeHandler,
-}) => {
-  const icon = isDepot ? homeIcon : defaultIcon;
-  return (
-    <Marker
-      key={location.id}
-      position={location}
-      icon={icon}
-      onClick={() => removeHandler(location.id)}
-    >
-      <Tooltip
-        // `permanent` is a static property (this is a React-Leaflet-specific
-        // approach: https://react-leaflet.js.org/docs/en/components). Changing `permanent` prop
-        // doesn't result in calling `setPermanent()` on the Leaflet element after the Tooltip component is mounted.
-        // We're using `key` to force re-rendering of Tooltip when `isSelected` changes. A similar use case for
-        // the `key` property is described here:
-        // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
-        // #recommendation-fully-uncontrolled-component-with-a-key
-        key={isSelected ? 'selected' : ''}
-        permanent={isSelected}
+export interface State {
+  valueArc: number;
+  valueSpeed: number;
+}
+
+class LocationMarker extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      valueArc: 0,
+      valueSpeed: 0,
+    };
+  }
+
+  private icon = this.props.isDepot ? homeIcon : defaultIcon;
+
+  render() {
+    return (
+      <Marker
+        key={this.props.location.id}
+        position={this.props.location}
+        icon={this.icon}
       >
-        {`Location ${location.id} [Lat=${location.lat}, Lng=${location.lng}]`}
-      </Tooltip>
-    </Marker>
-  );
-};
+        <Popup>
+          <span>
+            {`Location ${this.props.location.id}, valueArc=${this.state.valueArc}, valueSpeed=${this.state.valueSpeed}`}
+          </span>
+          <br />
+          <form id="popup-form">
+            <TextInput
+              id="input-speed"
+              className="popup-input"
+              type="number"
+              label="New speed:"
+            />
+            <table className="popup-table">
+              <tr className="popup-table-row">
+                <th className="popup-table-header">Arc number:</th>
+                <td id="value-arc" className="popup-table-data"> </td>
+              </tr>
+              <tr className="popup-table-row">
+                <th className="popup-table-header">Current speed:</th>
+                <td id="value-speed" className="popup-table-data"> </td>
+              </tr>
+            </table>
+            <button id="button-submit" type="button">Save Changes</button>
+          </form>
+        </Popup>
+        <Tooltip
+          // `permanent` is a static property (this is a React-Leaflet-specific
+          // approach: https://react-leaflet.js.org/docs/en/components). Changing `permanent` prop
+          // doesn't result in calling `setPermanent()` on the Leaflet element after the Tooltip component is mounted.
+          // We're using `key` to force re-rendering of Tooltip when `isSelected` changes. A similar use case for
+          // the `key` property is described here:
+          // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+          // #recommendation-fully-uncontrolled-component-with-a-key
+          key={this.props.isSelected ? 'selected' : ''}
+          permanent={this.props.isSelected}
+        >
+          {`Location ${this.props.location.id} [Lat=${this.props.location.lat}, Lng=${this.props.location.lng}]`}
+        </Tooltip>
+      </Marker>
+    );
+  }
+}
 
 export default LocationMarker;

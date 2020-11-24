@@ -108,7 +108,7 @@ function run_optaweb() {
   else
     [[ ${cc_list} != "??" ]] && args+=("--app.region.country-codes=$cc_list")
   fi
-  java -jar "$jar" "${args[@]}"
+  java "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" -jar "$jar" "${args[@]}"
 }
 
 function download() {
