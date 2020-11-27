@@ -32,20 +32,66 @@ exports[`Location Marker render depot 1`] = `
     }
   }
   key="1"
-  onClick={[Function]}
   position={
     Object {
+      "description": "location1",
       "id": 1,
       "lat": 1.345678,
       "lng": 1.345678,
     }
   }
 >
+  <ForwardRef(Leaflet(Popup))>
+    <span>
+      id 1, description=location1
+    </span>
+    <br />
+    <Form>
+      <FormGroup
+        fieldId="popup-form"
+        label="Description"
+      >
+        <ForwardRef
+          className="popup-input"
+          id="input-description"
+          onChange={[Function]}
+          type="text"
+          value="location1"
+        />
+      </FormGroup>
+      <ActionGroup>
+        <Component
+          id="save-button"
+          onClick={[Function]}
+          variant="primary"
+        >
+          Save
+        </Component>
+        <Component
+          id="remove-button"
+          onClick={[Function]}
+          variant="link"
+        >
+          Remove
+        </Component>
+        <Component
+          id="cancel-button"
+          onClick={[Function]}
+          variant="link"
+        >
+          Cancel
+        </Component>
+      </ActionGroup>
+    </Form>
+  </ForwardRef(Leaflet(Popup))>
   <ForwardRef(Leaflet(Tooltip))
     key=""
     permanent={false}
   >
-    Location 1 [Lat=1.345678, Lng=1.345678]
+    Location 1
+          [Lat=1.345678,
+          Lng=1.345678]
+          Desc=location1
   </ForwardRef(Leaflet(Tooltip))>
 </ForwardRef(Leaflet(Marker))>
 `;
@@ -59,20 +105,66 @@ exports[`Location Marker render visit 1`] = `
     }
   }
   key="1"
-  onClick={[Function]}
   position={
     Object {
+      "description": "location1",
       "id": 1,
       "lat": 1.345678,
       "lng": 1.345678,
     }
   }
 >
+  <ForwardRef(Leaflet(Popup))>
+    <span>
+      id 1, description=location1
+    </span>
+    <br />
+    <Form>
+      <FormGroup
+        fieldId="popup-form"
+        label="Description"
+      >
+        <ForwardRef
+          className="popup-input"
+          id="input-description"
+          onChange={[Function]}
+          type="text"
+          value="location1"
+        />
+      </FormGroup>
+      <ActionGroup>
+        <Component
+          id="save-button"
+          onClick={[Function]}
+          variant="primary"
+        >
+          Save
+        </Component>
+        <Component
+          id="remove-button"
+          onClick={[Function]}
+          variant="link"
+        >
+          Remove
+        </Component>
+        <Component
+          id="cancel-button"
+          onClick={[Function]}
+          variant="link"
+        >
+          Cancel
+        </Component>
+      </ActionGroup>
+    </Form>
+  </ForwardRef(Leaflet(Popup))>
   <ForwardRef(Leaflet(Tooltip))
     key=""
     permanent={false}
   >
-    Location 1 [Lat=1.345678, Lng=1.345678]
+    Location 1
+          [Lat=1.345678,
+          Lng=1.345678]
+          Desc=location1
   </ForwardRef(Leaflet(Tooltip))>
 </ForwardRef(Leaflet(Marker))>
 `;
@@ -86,20 +178,66 @@ exports[`Location Marker selected visit should show a tooltip 1`] = `
     }
   }
   key="1"
-  onClick={[Function]}
   position={
     Object {
+      "description": "location1",
       "id": 1,
       "lat": 1.345678,
       "lng": 1.345678,
     }
   }
 >
+  <ForwardRef(Leaflet(Popup))>
+    <span>
+      id 1, description=location1
+    </span>
+    <br />
+    <Form>
+      <FormGroup
+        fieldId="popup-form"
+        label="Description"
+      >
+        <ForwardRef
+          className="popup-input"
+          id="input-description"
+          onChange={[Function]}
+          type="text"
+          value="location1"
+        />
+      </FormGroup>
+      <ActionGroup>
+        <Component
+          id="save-button"
+          onClick={[Function]}
+          variant="primary"
+        >
+          Save
+        </Component>
+        <Component
+          id="remove-button"
+          onClick={[Function]}
+          variant="link"
+        >
+          Remove
+        </Component>
+        <Component
+          id="cancel-button"
+          onClick={[Function]}
+          variant="link"
+        >
+          Cancel
+        </Component>
+      </ActionGroup>
+    </Form>
+  </ForwardRef(Leaflet(Popup))>
   <ForwardRef(Leaflet(Tooltip))
     key="selected"
     permanent={true}
   >
-    Location 1 [Lat=1.345678, Lng=1.345678]
+    Location 1
+          [Lat=1.345678,
+          Lng=1.345678]
+          Desc=location1
   </ForwardRef(Leaflet(Tooltip))>
 </ForwardRef(Leaflet(Marker))>
 `;

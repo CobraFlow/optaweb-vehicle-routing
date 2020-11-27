@@ -54,6 +54,7 @@ class LocationMarker extends React.Component<Props, State> {
     };
 
     this.handleSave = this.handleSave.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
 
@@ -67,6 +68,10 @@ class LocationMarker extends React.Component<Props, State> {
       description: this.state.description,
     };
     this.props.updateHandler(location);
+  }
+
+  handleRemove() {
+    this.props.removeHandler(this.props.location.id);
   }
 
   handleCancel() {
@@ -104,8 +109,9 @@ class LocationMarker extends React.Component<Props, State> {
               />
             </FormGroup>
             <ActionGroup>
-              <Button variant="primary" onClick={this.handleSave}>Save</Button>
-              <Button variant="link" onClick={this.handleCancel}>Cancel</Button>
+              <Button id="save-button" variant="primary" onClick={this.handleSave}>Save</Button>
+              <Button id="remove-button" variant="link" onClick={this.handleRemove}>Remove</Button>
+              <Button id="cancel-button" variant="link" onClick={this.handleCancel}>Cancel</Button>
             </ActionGroup>
           </Form>
         </Popup>

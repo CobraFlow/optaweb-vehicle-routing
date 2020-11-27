@@ -17,7 +17,6 @@
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import * as React from 'react';
-import { Marker } from 'react-leaflet';
 import { Location } from 'store/route/types';
 import LocationMarker, { Props } from './LocationMarker';
 
@@ -65,6 +64,19 @@ describe('Location Marker', () => {
     expect(toJson(locationMarker)).toMatchSnapshot();
   });
 
+  it('should call update handler when clicked', () => {
+    const props: Props = {
+      removeHandler: jest.fn(),
+      updateHandler: jest.fn(),
+      isDepot: false,
+      isSelected: true,
+      location,
+    };
+    const locationMarker = shallow(<LocationMarker {...props} />);
+    locationMarker.find('#save-button').simulate('click');
+    expect(props.updateHandler).toBeCalled();
+  });
+
   it('should call remove handler when clicked', () => {
     const props: Props = {
       removeHandler: jest.fn(),
@@ -74,7 +86,7 @@ describe('Location Marker', () => {
       location,
     };
     const locationMarker = shallow(<LocationMarker {...props} />);
-    locationMarker.find(Marker).simulate('click');
+    locationMarker.find('#remove-button').simulate('click');
     expect(props.removeHandler).toBeCalled();
   });
 });

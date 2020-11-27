@@ -34,12 +34,14 @@ exports[`Route Map should ignore bounds if viewport is dirty 1`] = `
     isSelected={false}
     location={
       Object {
+        "description": "depot1",
         "id": 1,
         "lat": 1.345678,
         "lng": 1.345678,
       }
     }
     removeHandler={[MockFunction]}
+    updateHandler={[MockFunction]}
   />
   <ForwardRef(Leaflet(Rectangle))
     bounds={
@@ -108,12 +110,14 @@ exports[`Route Map should pan and zoom to show bounding box if viewport is not d
     isSelected={true}
     location={
       Object {
+        "description": "depot1",
         "id": 1,
         "lat": 1.345678,
         "lng": 1.345678,
       }
     }
     removeHandler={[MockFunction]}
+    updateHandler={[MockFunction]}
   />
   <LocationMarker
     isDepot={false}
@@ -121,12 +125,14 @@ exports[`Route Map should pan and zoom to show bounding box if viewport is not d
     key="2"
     location={
       Object {
+        "description": "visit2",
         "id": 2,
         "lat": 2.345678,
         "lng": 2.345678,
       }
     }
     removeHandler={[MockFunction]}
+    updateHandler={[MockFunction]}
   />
   <LocationMarker
     isDepot={false}
@@ -134,12 +140,14 @@ exports[`Route Map should pan and zoom to show bounding box if viewport is not d
     key="3"
     location={
       Object {
+        "description": "visit3",
         "id": 3,
         "lat": 3.676111,
         "lng": 3.568333,
       }
     }
     removeHandler={[MockFunction]}
+    updateHandler={[MockFunction]}
   />
   <ForwardRef(Leaflet(Polyline))
     color="deepskyblue"
@@ -216,12 +224,14 @@ exports[`Route Map should show the whole world when bounding box is null 1`] = `
     isSelected={true}
     location={
       Object {
+        "description": "depot1",
         "id": 1,
         "lat": 1.345678,
         "lng": 1.345678,
       }
     }
     removeHandler={[MockFunction]}
+    updateHandler={[MockFunction]}
   />
   <ForwardRef(Leaflet(Polyline))
     color="deepskyblue"
