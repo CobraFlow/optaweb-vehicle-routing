@@ -52,6 +52,16 @@ public interface LocationRepository {
     Location removeLocation(long id);
 
     /**
+     * Remove a location with the given ID.
+     *
+     *
+     * @param id location ID
+     * @param description to update
+     * @return the updated location
+     */
+    Location updateLocation(long id, String description);
+
+    /**
      * Remove all locations from the repository.
      */
     void removeAll();

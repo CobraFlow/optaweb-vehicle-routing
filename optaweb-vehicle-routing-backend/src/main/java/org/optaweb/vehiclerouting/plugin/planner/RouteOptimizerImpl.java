@@ -154,6 +154,12 @@ class RouteOptimizerImpl implements RouteOptimizer {
     }
 
     @Override
+    public void nopChange() {
+        solverManager.nopChange();
+        publishSolution();
+    }
+
+    @Override
     public void removeAllLocations() {
         solverManager.stopSolver();
         depot = null;

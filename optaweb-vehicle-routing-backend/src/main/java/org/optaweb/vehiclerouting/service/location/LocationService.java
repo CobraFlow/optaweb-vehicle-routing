@@ -67,6 +67,16 @@ public class LocationService {
         return submitToPlanner(Objects.requireNonNull(location));
     }
 
+    public void updateLocation(long id, String description) {
+        Optional<Location> optionalLocation = repository.find(id);
+        if (!optionalLocation.isPresent()) {
+            eventPublisher.publishEvent(
+                    new ErrorEvent(this, "Location [" + id + "] cannot be updated because it doesn't exist."));
+            return;
+        }
+        repository.updateLocation(id, description);
+    }
+
     private boolean submitToPlanner(Location location) {
         try {
             DistanceMatrixRow distanceMatrixRow = distanceMatrix.addLocation(location);

@@ -27,6 +27,7 @@ export interface Props {
   selectedId: number;
   clickHandler: (e: React.SyntheticEvent<HTMLElement>) => void;
   removeHandler: (id: number) => void;
+  updateHandler: (location: Location) => void;
   depot: Location | null;
   visits: Location[];
   routes: Omit<RouteWithTrack, 'vehicle'>[];
@@ -51,6 +52,7 @@ const RouteMap: React.FC<Props> = ({
   routes,
   clickHandler,
   removeHandler,
+  updateHandler,
   updateViewport,
 }) => {
   const bounds = boundingBox ? new L.LatLngBounds(boundingBox[0], boundingBox[1]) : undefined;
@@ -81,6 +83,7 @@ const RouteMap: React.FC<Props> = ({
           isDepot
           isSelected={depot.id === selectedId}
           removeHandler={removeHandler}
+          updateHandler={updateHandler}
         />
       )}
       {visits.map((location) => (
@@ -90,6 +93,7 @@ const RouteMap: React.FC<Props> = ({
           isDepot={false}
           isSelected={location.id === selectedId}
           removeHandler={removeHandler}
+          updateHandler={updateHandler}
         />
       ))}
       {routes.map((route, index) => (

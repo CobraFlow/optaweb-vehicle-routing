@@ -41,6 +41,13 @@ class LocationRepositoryImpl implements LocationRepository {
         this.repository = repository;
     }
 
+    private static Location toDomain(LocationEntity locationEntity) {
+        return new Location(
+                locationEntity.getId(),
+                new Coordinates(locationEntity.getLatitude(), locationEntity.getLongitude()),
+                locationEntity.getDescription());
+    }
+
     @Override
     public Location createLocation(Coordinates coordinates, String description) {
         LocationEntity locationEntity = repository.save(
@@ -69,6 +76,24 @@ class LocationRepositoryImpl implements LocationRepository {
     }
 
     @Override
+    public Location updateLocation(long id, String description) {
+        Optional<LocationEntity> maybeLocation = repository.findById(id);
+        if (!maybeLocation.isPresent()) {
+            throw new IllegalArgumentException("Location{id=" + id + "} doesn't exist");
+        }
+        LocationEntity existingLocationEntity = maybeLocation.get();
+        LocationEntity locationEntity = repository.save(new LocationEntity(
+                id,
+                existingLocationEntity.getLatitude(),
+                existingLocationEntity.getLongitude(),
+                // Only updating description at the moment
+                description));
+        Location location = toDomain(locationEntity);
+        logger.info("Updated location {}.", location.fullDescription());
+        return location;
+    }
+
+    @Override
     public void removeAll() {
         repository.deleteAll();
     }
@@ -76,12 +101,5 @@ class LocationRepositoryImpl implements LocationRepository {
     @Override
     public Optional<Location> find(long locationId) {
         return repository.findById(locationId).map(LocationRepositoryImpl::toDomain);
-    }
-
-    private static Location toDomain(LocationEntity locationEntity) {
-        return new Location(
-                locationEntity.getId(),
-                new Coordinates(locationEntity.getLatitude(), locationEntity.getLongitude()),
-                locationEntity.getDescription());
     }
 }

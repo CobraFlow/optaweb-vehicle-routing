@@ -22,11 +22,7 @@ import java.util.concurrent.ExecutionException;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.event.BestSolutionChangedEvent;
 import org.optaplanner.core.api.solver.event.SolverEventListener;
-import org.optaweb.vehiclerouting.plugin.planner.change.AddVehicle;
-import org.optaweb.vehiclerouting.plugin.planner.change.AddVisit;
-import org.optaweb.vehiclerouting.plugin.planner.change.ChangeVehicleCapacity;
-import org.optaweb.vehiclerouting.plugin.planner.change.RemoveVehicle;
-import org.optaweb.vehiclerouting.plugin.planner.change.RemoveVisit;
+import org.optaweb.vehiclerouting.plugin.planner.change.*;
 import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVehicle;
 import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVisit;
 import org.optaweb.vehiclerouting.plugin.planner.domain.VehicleRoutingSolution;
@@ -175,6 +171,11 @@ class SolverManager implements SolverEventListener<VehicleRoutingSolution> {
     void changeCapacity(PlanningVehicle vehicle) {
         assertSolverIsAlive();
         solver.addProblemFactChange(new ChangeVehicleCapacity(vehicle));
+    }
+
+    void nopChange() {
+        assertSolverIsAlive();
+        solver.addProblemFactChange(new NopChange());
     }
 
     /**

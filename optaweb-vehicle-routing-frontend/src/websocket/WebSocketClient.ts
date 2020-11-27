@@ -16,7 +16,7 @@
 
 import SockJS from 'sockjs-client';
 import { MessagePayload } from 'store/message/types';
-import { LatLngWithDescription, RoutingPlan } from 'store/route/types';
+import { LatLngWithDescription, RoutingPlan, Location } from 'store/route/types';
 import { ServerInfo } from 'store/server/types';
 import { Client, Frame, over } from 'webstomp-client';
 
@@ -70,6 +70,12 @@ export default class WebSocketClient {
   deleteLocation(locationId: number) {
     if (this.stompClient) {
       this.stompClient.send(`/app/location/${locationId}/delete`, JSON.stringify(locationId)); // TODO no body
+    }
+  }
+
+  updateLocation(location: Location) {
+    if (this.stompClient) {
+      this.stompClient.send(`/app/location/${location.id}`, JSON.stringify(location));
     }
   }
 

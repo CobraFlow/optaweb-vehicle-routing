@@ -67,6 +67,7 @@ export interface DispatchProps {
   clearHandler: typeof routeOperations.clearRoute;
   addLocationHandler: typeof routeOperations.addLocation;
   removeLocationHandler: typeof routeOperations.deleteLocation;
+  updateLocationHandler: typeof routeOperations.updateLocation;
   addVehicleHandler: typeof routeOperations.addVehicle;
   removeVehicleHandler: typeof routeOperations.deleteAnyVehicle;
   updateViewport: typeof clientOperations.updateViewport;
@@ -92,6 +93,7 @@ const mapDispatchToProps: DispatchProps = {
   clearHandler: routeOperations.clearRoute,
   addLocationHandler: routeOperations.addLocation,
   removeLocationHandler: routeOperations.deleteLocation,
+  updateLocationHandler: routeOperations.updateLocation,
   addVehicleHandler: routeOperations.addVehicle,
   removeVehicleHandler: routeOperations.deleteAnyVehicle,
   updateViewport: clientOperations.updateViewport,
@@ -148,6 +150,7 @@ export class Demo extends React.Component<DemoProps, DemoState> {
       addVehicleHandler,
       removeVehicleHandler,
       removeLocationHandler,
+      updateLocationHandler,
       clearHandler,
       updateViewport,
     } = this.props;
@@ -252,6 +255,7 @@ export class Demo extends React.Component<DemoProps, DemoState> {
             selectedId={selectedId}
             clickHandler={this.handleMapClick}
             removeHandler={removeLocationHandler}
+            updateHandler={updateLocationHandler}
             depot={depot}
             routes={routes}
             visits={visits}

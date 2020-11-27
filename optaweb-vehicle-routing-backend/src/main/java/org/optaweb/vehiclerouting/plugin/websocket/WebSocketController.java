@@ -26,9 +26,11 @@ import org.optaweb.vehiclerouting.domain.RoutingPlan;
 import org.optaweb.vehiclerouting.service.demo.DemoService;
 import org.optaweb.vehiclerouting.service.error.ErrorEvent;
 import org.optaweb.vehiclerouting.service.location.LocationService;
+import org.optaweb.vehiclerouting.service.location.RouteOptimizer;
 import org.optaweb.vehiclerouting.service.region.BoundingBox;
 import org.optaweb.vehiclerouting.service.region.RegionService;
 import org.optaweb.vehiclerouting.service.route.RouteListener;
+import org.optaweb.vehiclerouting.service.route.RoutingPlanConsumer;
 import org.optaweb.vehiclerouting.service.vehicle.VehicleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +58,11 @@ class WebSocketController {
     private final VehicleService vehicleService;
     private final DemoService demoService;
     private final ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private RoutingPlanConsumer planConsumer;
+    @Autowired
+    private RouteOptimizer optimizer;
 
     @Autowired
     WebSocketController(
@@ -129,6 +136,19 @@ class WebSocketController {
     @MessageMapping("/location/{id}/delete")
     void removeLocation(@DestinationVariable long id) {
         locationService.removeLocation(id);
+    }
+
+    /**
+     * Update location.
+     *
+     * @param id ID of the location to be updated
+     * @param request updated location
+     */
+    @MessageMapping("/location/{id}")
+    void updateLocation(@DestinationVariable long id, PortableLocation request) {
+        locationService.updateLocation(id, request.getDescription());
+        optimizer.nopChange();
+        //        planConsumer.consumePlan(routeListener.getBestRoutingPlan());
     }
 
     /**

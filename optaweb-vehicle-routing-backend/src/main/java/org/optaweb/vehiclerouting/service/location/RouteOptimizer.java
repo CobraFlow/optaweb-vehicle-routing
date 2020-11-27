@@ -37,4 +37,6 @@ public interface RouteOptimizer {
     void removeAllVehicles();
 
     void changeCapacity(Vehicle vehicle);
+
+    void nopChange();
 }

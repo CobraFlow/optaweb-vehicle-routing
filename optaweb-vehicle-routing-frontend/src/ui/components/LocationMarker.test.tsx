@@ -25,12 +25,14 @@ const location: Location = {
   id: 1,
   lat: 1.345678,
   lng: 1.345678,
+  description: 'location1',
 };
 
 describe('Location Marker', () => {
   it('render depot', () => {
     const props: Props = {
       removeHandler: jest.fn(),
+      updateHandler: jest.fn(),
       isDepot: true,
       isSelected: false,
       location,
@@ -42,6 +44,7 @@ describe('Location Marker', () => {
   it('render visit', () => {
     const props: Props = {
       removeHandler: jest.fn(),
+      updateHandler: jest.fn(),
       isDepot: false,
       isSelected: false,
       location,
@@ -53,6 +56,7 @@ describe('Location Marker', () => {
   it('selected visit should show a tooltip', () => {
     const props: Props = {
       removeHandler: jest.fn(),
+      updateHandler: jest.fn(),
       isDepot: false,
       isSelected: true,
       location,
@@ -64,6 +68,7 @@ describe('Location Marker', () => {
   it('should call remove handler when clicked', () => {
     const props: Props = {
       removeHandler: jest.fn(),
+      updateHandler: jest.fn(),
       isDepot: false,
       isSelected: true,
       location,

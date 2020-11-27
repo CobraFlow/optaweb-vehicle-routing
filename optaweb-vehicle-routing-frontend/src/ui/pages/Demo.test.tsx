@@ -89,6 +89,7 @@ const emptyRouteProps: DemoProps = {
   removeVehicleHandler: jest.fn,
   addLocationHandler: jest.fn(),
   removeLocationHandler: jest.fn(),
+  updateLocationHandler: jest.fn(),
   updateViewport: jest.fn(),
 
   distance: '0',
@@ -111,6 +112,7 @@ const threeLocationsProps: DemoProps = {
   removeVehicleHandler: jest.fn,
   addLocationHandler: jest.fn(),
   removeLocationHandler: jest.fn(),
+  updateLocationHandler: jest.fn(),
   updateViewport: jest.fn(),
 
   distance: '10',
@@ -125,16 +127,19 @@ const threeLocationsProps: DemoProps = {
     id: 1,
     lat: 1.345678,
     lng: 1.345678,
+    description: 'depot1',
   },
 
   visits: [{
     id: 2,
     lat: 2.345678,
     lng: 2.345678,
+    description: 'visit2',
   }, {
     id: 3,
     lat: 3.676111,
     lng: 3.568333,
+    description: 'visit3',
   }],
 
   routes: [{
@@ -143,14 +148,17 @@ const threeLocationsProps: DemoProps = {
       id: 1,
       lat: 1.345678,
       lng: 1.345678,
+      description: 'visit1',
     }, {
       id: 2,
       lat: 2.345678,
       lng: 2.345678,
+      description: 'visit2',
     }, {
       id: 3,
       lat: 3.676111,
       lng: 3.568333,
+      description: 'visit3',
     }],
 
     track: [],

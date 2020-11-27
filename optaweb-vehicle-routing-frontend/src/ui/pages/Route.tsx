@@ -47,6 +47,7 @@ export interface StateProps {
 export interface DispatchProps {
   addHandler: typeof routeOperations.addLocation;
   removeHandler: typeof routeOperations.deleteLocation;
+  updateHandler: typeof routeOperations.updateLocation;
   updateViewport: typeof clientOperations.updateViewport;
 }
 
@@ -61,6 +62,7 @@ const mapStateToProps = ({ plan, serverInfo, userViewport }: AppState): StatePro
 const mapDispatchToProps: DispatchProps = {
   addHandler: routeOperations.addLocation,
   removeHandler: routeOperations.deleteLocation,
+  updateHandler: routeOperations.updateLocation,
   updateViewport: clientOperations.updateViewport,
 };
 
@@ -100,6 +102,7 @@ export class Route extends React.Component<RouteProps, RouteState> {
       visits,
       routes,
       removeHandler,
+      updateHandler,
       updateViewport,
     } = this.props;
 
@@ -156,6 +159,7 @@ export class Route extends React.Component<RouteProps, RouteState> {
               selectedId={selectedId}
               clickHandler={this.handleMapClick}
               removeHandler={removeHandler}
+              updateHandler={updateHandler}
               depot={depot}
               visits={visits}
               routes={filteredRoutes}

@@ -15,10 +15,10 @@
  */
 
 import '@patternfly/patternfly/patternfly.css';
-import { TextInput } from '@patternfly/react-core';
+import { ActionGroup, Button, Form, FormGroup, TextInput } from '@patternfly/react-core';
 import * as L from 'leaflet';
 import * as React from 'react';
-import { Marker, Tooltip, Popup } from 'react-leaflet';
+import { Marker, Popup, Tooltip } from 'react-leaflet';
 import { Location } from 'store/route/types';
 
 const homeIcon = L.icon({
@@ -38,11 +38,11 @@ export interface Props {
   isDepot: boolean;
   isSelected: boolean;
   removeHandler: (id: number) => void;
+  updateHandler: (location: Location) => void;
 }
 
 export interface State {
-  valueArc: number;
-  valueSpeed: number;
+  description?: string;
 }
 
 class LocationMarker extends React.Component<Props, State> {
@@ -50,44 +50,64 @@ class LocationMarker extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      valueArc: 0,
-      valueSpeed: 0,
+      description: props.location.description,
     };
+
+    this.handleSave = this.handleSave.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   private icon = this.props.isDepot ? homeIcon : defaultIcon;
 
+  handleSave() {
+    const location: Location = {
+      id: this.props.location.id,
+      lat: this.props.location.lat,
+      lng: this.props.location.lng,
+      description: this.state.description,
+    };
+    this.props.updateHandler(location);
+  }
+
+  handleCancel() {
+    console.log(this);
+  }
+
   render() {
+    const { description } = this.state;
+    const { id, lat, lng } = this.props.location;
+
     return (
       <Marker
-        key={this.props.location.id}
+        key={id}
         position={this.props.location}
         icon={this.icon}
       >
         <Popup>
           <span>
-            {`Location ${this.props.location.id}, valueArc=${this.state.valueArc}, valueSpeed=${this.state.valueSpeed}`}
+            {`id ${id}, description=${description}`}
           </span>
           <br />
-          <form id="popup-form">
-            <TextInput
-              id="input-speed"
-              className="popup-input"
-              type="number"
-              label="New speed:"
-            />
-            <table className="popup-table">
-              <tr className="popup-table-row">
-                <th className="popup-table-header">Arc number:</th>
-                <td id="value-arc" className="popup-table-data"> </td>
-              </tr>
-              <tr className="popup-table-row">
-                <th className="popup-table-header">Current speed:</th>
-                <td id="value-speed" className="popup-table-data"> </td>
-              </tr>
-            </table>
-            <button id="button-submit" type="button">Save Changes</button>
-          </form>
+          <Form>
+            <FormGroup
+              fieldId="popup-form"
+              label="Description"
+            >
+              <TextInput
+                id="input-description"
+                className="popup-input"
+                type="text"
+                value={description}
+                onChange={(value) => {
+                  this.setState({ description: value });
+                }}
+              />
+            </FormGroup>
+            <ActionGroup>
+              <Button variant="primary" onClick={this.handleSave}>Save</Button>
+              <Button variant="link" onClick={this.handleCancel}>Cancel</Button>
+            </ActionGroup>
+          </Form>
         </Popup>
         <Tooltip
           // `permanent` is a static property (this is a React-Leaflet-specific
@@ -100,7 +120,10 @@ class LocationMarker extends React.Component<Props, State> {
           key={this.props.isSelected ? 'selected' : ''}
           permanent={this.props.isSelected}
         >
-          {`Location ${this.props.location.id} [Lat=${this.props.location.lat}, Lng=${this.props.location.lng}]`}
+          {`Location ${id}
+          [Lat=${lat},
+          Lng=${lng}]
+          Desc=${description}`}
         </Tooltip>
       </Marker>
     );

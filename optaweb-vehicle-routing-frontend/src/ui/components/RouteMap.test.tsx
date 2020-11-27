@@ -25,11 +25,13 @@ describe('Route Map', () => {
       updateViewport: jest.fn,
       clickHandler: jest.fn(),
       removeHandler: jest.fn(),
+      updateHandler: jest.fn(),
       selectedId: 1,
       depot: {
         id: 1,
         lat: 1.345678,
         lng: 1.345678,
+        description: 'depot1',
       },
       visits: [],
       routes: [{
@@ -52,21 +54,25 @@ describe('Route Map', () => {
       id: 1,
       lat: 1.345678,
       lng: 1.345678,
+      description: 'depot1',
     };
     const visit2 = {
       id: 2,
       lat: 2.345678,
       lng: 2.345678,
+      description: 'visit2',
     };
     const visit3 = {
       id: 3,
       lat: 3.676111,
       lng: 3.568333,
+      description: 'visit3',
     };
     const props: Props = {
       updateViewport: jest.fn(),
       clickHandler: jest.fn(),
       removeHandler: jest.fn(),
+      updateHandler: jest.fn(),
       selectedId: 1,
       boundingBox: [{ lat: -1, lng: -2 }, { lat: 10, lng: 20 }],
       userViewport: {
@@ -90,11 +96,13 @@ describe('Route Map', () => {
       id: 1,
       lat: 1.345678,
       lng: 1.345678,
+      description: 'depot1',
     };
     const props: Props = {
       updateViewport: jest.fn(),
       clickHandler: jest.fn(),
       removeHandler: jest.fn(),
+      updateHandler: jest.fn(),
       selectedId: NaN,
       boundingBox: [{ lat: -1, lng: -2 }, { lat: 10, lng: 20 }],
       userViewport: {
