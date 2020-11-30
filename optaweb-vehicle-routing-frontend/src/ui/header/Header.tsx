@@ -20,7 +20,7 @@ import NavigationWithRouter from './Navigation';
 
 const Header: React.FC = () => (
   <PageHeader
-    logo={<Brand src="./assets/images/optaPlannerLogo200px.png" alt="OptaPlanner Logo" />}
+    logo={<Brand src="./assets/images/cobra_large.gif" alt="CobraFlow Logo" />}
     topNav={<NavigationWithRouter />}
   />
 );

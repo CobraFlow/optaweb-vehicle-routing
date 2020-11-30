@@ -25,7 +25,7 @@ import Header from './header/Header';
 import { Demo, Route as RoutePage, Vehicles, Visits } from './pages';
 
 export const pagesByPath = [
-  { path: { canonical: '/demo', aliases: ['/'] }, page: Demo, label: 'Demo' },
+  { path: { canonical: '/overview', aliases: ['/'] }, page: Demo, label: 'Overview' },
   { path: { canonical: '/vehicles', aliases: [] }, page: Vehicles, label: 'Vehicles' },
   { path: { canonical: '/visits', aliases: [] }, page: Visits, label: 'Visits' },
   { path: { canonical: '/routes', aliases: [] }, page: RoutePage, label: 'Routes' },

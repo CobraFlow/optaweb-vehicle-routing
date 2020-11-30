@@ -167,7 +167,7 @@ export class Demo extends React.Component<DemoProps, DemoState> {
           style={sideBarStyle}
         >
           <TextContent>
-            <Text component={TextVariants.h1}>Demo</Text>
+            <Text component={TextVariants.h1}>Advanced Vehicle Routing</Text>
           </TextContent>
           <SearchBox
             boundingBox={boundingBox}
