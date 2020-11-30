@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Location Popup render description 1`] = `
+<ForwardRef(Leaflet(Popup))
+  minWidth={300}
+>
+  <span>
+    id 1, description=location1
+  </span>
+  <br />
+  <Form>
+    <FormGroup
+      fieldId="popup-form"
+      label="Description"
+    >
+      <ForwardRef
+        className="popup-input"
+        id="input-description"
+        onChange={[Function]}
+        type="text"
+        value="location1"
+      />
+    </FormGroup>
+    <ActionGroup>
+      <Component
+        id="save-button"
+        onClick={[Function]}
+        variant="primary"
+      >
+        Save
+      </Component>
+      <Component
+        id="remove-button"
+        onClick={[Function]}
+        variant="link"
+      >
+        Remove
+      </Component>
+      <Component
+        id="cancel-button"
+        onClick={[Function]}
+        variant="link"
+      >
+        Cancel
+      </Component>
+    </ActionGroup>
+  </Form>
+</ForwardRef(Leaflet(Popup))>
+`;
