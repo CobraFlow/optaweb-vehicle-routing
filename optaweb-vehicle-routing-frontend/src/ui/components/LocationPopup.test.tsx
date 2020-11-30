@@ -18,7 +18,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import * as React from 'react';
 import { Location } from 'store/route/types';
-import LocationPopup, { Props } from "./LocationPopup";
+import LocationPopup, { Props } from './LocationPopup';
 
 const location: Location = {
   id: 1,
