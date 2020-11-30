@@ -56,7 +56,7 @@ const renderLocationList: React.FC<LocationListProps> = ({
       {visits
         .slice(0) // clone the array because
         // sort is done in place (that would affect the route)
-        .sort((a, b) => a.id - b.id)
+        // .sort((a, b) => a.id - b.id)
         .map((visit) => (
           <LocationItem
             key={visit.id}
