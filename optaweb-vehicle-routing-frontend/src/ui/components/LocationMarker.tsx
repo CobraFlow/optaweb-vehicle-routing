@@ -83,7 +83,7 @@ const LocationMarker: React.FC<Props> = ({
         key={isSelected ? 'selected' : ''}
         permanent={isSelected}
       >
-        {`${location.description}`}
+        {`${location.description ? location.description : 'Unknown'}`}
       </Tooltip>
     </Marker>
   );
