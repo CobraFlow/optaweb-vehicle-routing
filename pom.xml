@@ -31,7 +31,7 @@
   <artifactId>optaweb-vehicle-routing</artifactId>
   <packaging>pom</packaging>
 
-  <name>OptaWeb Vehicle Routing</name>
+  <name>CobraFlow Vehicle Routing</name>
 
   <!-- Modules are sorted in preferred build order. -->
   <modules>

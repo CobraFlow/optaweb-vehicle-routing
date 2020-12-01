@@ -29,7 +29,7 @@
   <artifactId>optaweb-vehicle-routing-standalone</artifactId>
   <packaging>jar</packaging>
 
-  <name>OptaWeb Vehicle Routing Standalone</name>
+  <name>CobraFlow Vehicle Routing Standalone</name>
 
   <properties>
     <application.port>8180</application.port>

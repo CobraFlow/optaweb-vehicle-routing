@@ -1,9 +1,9 @@
 [[contributing]]
-= Contributing to OptaWeb Vehicle Routing
+= Contributing to CobraFlow Vehicle Routing
 
-== Formatting OptaWeb Vehicle Routing source code using Maven
+== Formatting CobraFlow Vehicle Routing source code using Maven
 
-The OptaWeb Vehicle Routing back end has a strictly enforced code style.
+The CobraFlow Vehicle Routing back end has a strictly enforced code style.
 Code formatting is performed by the Eclipse code formatter, using configuration files from the OptaPlanner project.
 
 By default, when you execute the `./mvnw install` command, the code is formatted automatically.
@@ -25,7 +25,7 @@ Therefore, it is recommended that you always run a full Maven build before submi
 ./mvnw process-sources
 ----
 
-== Formatting OptaWeb Vehicle Routing source code using an IDE
+== Formatting CobraFlow Vehicle Routing source code using an IDE
 
 You can use Eclipse IDE or IntelliJ IDEA to format the source code without having to invoke the Maven build.
 This allows you to make small changes and commit often while making sure that the source code is formatted properly and the Maven build is successful after each commit.

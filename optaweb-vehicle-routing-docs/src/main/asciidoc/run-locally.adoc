@@ -1,7 +1,7 @@
 [[run-locally-sh]]
 = Run locally using the script
 
-Linux and macOS users can use a Bash script called `runLocally.sh` to run OptaWeb Vehicle Routing.
+Linux and macOS users can use a Bash script called `runLocally.sh` to run CobraFlow Vehicle Routing.
 The script automates some setup steps that would otherwise have to be carried out manually.
 The script will:
 
@@ -9,7 +9,7 @@ The script will:
 * Download selected OSM files from Geofabrik.
 * Try to associate a country code with each downloaded OSM file automatically.
 * Build the project if the standalone JAR file does not exist.
-* Launch OptaWeb Vehicle Routing by taking a single region argument or by selecting the region interactively.
+* Launch CobraFlow Vehicle Routing by taking a single region argument or by selecting the region interactively.
 
 == Quickstart mode
 
@@ -28,7 +28,7 @@ To use the quickstart mode, run the script with no arguments.
 . Confirm the download of the OSM file needed to work with the built-in data set.
 
 The application starts after the OSM file is downloaded.
-Open http://localhost:8080 in a web browser to work with OptaWeb Vehicle Routing.
+Open http://localhost:8080 in a web browser to work with CobraFlow Vehicle Routing.
 
 NOTE: The first start may take a few minutes because the OSM file needs to be imported by GraphHopper and stored as a road network graph.
 Subsequent runs will load the graph from the file system without importing the OSM file and will be significantly faster.
@@ -54,17 +54,17 @@ For the best user experience, use smaller regions such as individual European or
 Using OSM files larger than 1 GB will require significant RAM size and take a lot of time (up to several hours) for the initial processing.
 ====
 
-=== Select a region and run OptaWeb Vehicle Routing
+=== Select a region and run CobraFlow Vehicle Routing
 
 .Procedure
 . Run `./runLocally.sh -i`.
 . Select a region from the list of downloaded regions by entering its ID.
 . Confirm the project build if it hasn't been built yet.
-. Confirm starting OptaWeb Vehicle Routing using the selected region.
+. Confirm starting CobraFlow Vehicle Routing using the selected region.
 
 == Non-interactive mode
 
-Use the non-interactive mode to specify an existing region and start OptaWeb Vehicle Routing with a single command.
+Use the non-interactive mode to specify an existing region and start CobraFlow Vehicle Routing with a single command.
 This is useful for switching between regions quickly or when doing a demo.
 
 .Procedure
@@ -72,12 +72,12 @@ Run `./runLocally.sh <REGION>`.
 
 == Air distance mode
 
-OptaWeb Vehicle Routing can work in air distance mode that calculates travel times based on the distance between two coordinates.
-Use this mode in situations where you need to get OptaWeb Vehicle Routing up and running as quickly as possible and do not want to use an OSM (OpenStreetMap) file.
-Air distance mode is only useful if you need to smoke-test OptaWeb Vehicle Routing and you do not need accurate travel times.
+CobraFlow Vehicle Routing can work in air distance mode that calculates travel times based on the distance between two coordinates.
+Use this mode in situations where you need to get CobraFlow Vehicle Routing up and running as quickly as possible and do not want to use an OSM (OpenStreetMap) file.
+Air distance mode is only useful if you need to smoke-test CobraFlow Vehicle Routing and you do not need accurate travel times.
 
 .Procedure
-Run the `runLocally.sh` script with `--air` argument to start OptaWeb Vehicle Routing in air distance mode:
+Run the `runLocally.sh` script with `--air` argument to start CobraFlow Vehicle Routing in air distance mode:
 
 [source,bash]
 ----

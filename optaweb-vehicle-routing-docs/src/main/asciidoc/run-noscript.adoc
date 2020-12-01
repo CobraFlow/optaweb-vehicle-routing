@@ -3,15 +3,15 @@
 
 include::attributes.adoc[]
 
-Follow this section if you cannot use <<run-locally#run-locally-sh,runLocally.sh>> to run OptaWeb Vehicle Routing because Bash is not available on your system.
+Follow this section if you cannot use <<run-locally#run-locally-sh,runLocally.sh>> to run CobraFlow Vehicle Routing because Bash is not available on your system.
 
 [[download-osm]]
 == Download routing data
 
 The routing engine requires geographical data to calculate the time it takes vehicles to travel between locations.
-You must download and store OSM (OpenStreetMap) data files on the local file system before you run OptaWeb Vehicle Routing.
+You must download and store OSM (OpenStreetMap) data files on the local file system before you run CobraFlow Vehicle Routing.
 
-NOTE: The OSM data files are typically between 100 MB to 1 GB and take time to download so it is a good idea to download the files before building or starting the OptaWeb Vehicle Routing application.
+NOTE: The OSM data files are typically between 100 MB to 1 GB and take time to download so it is a good idea to download the files before building or starting the CobraFlow Vehicle Routing application.
 
 .Procedure
 . Open http://download.geofabrik.de/ in a web browser.
@@ -22,9 +22,9 @@ The sub region's page opens.
 [[data-dir-setup]]
 == Create data directory structure
 
-OptaWeb Vehicle Routing reads and writes several types of data on the file system.
+CobraFlow Vehicle Routing reads and writes several types of data on the file system.
 It reads OSM (OpenStreetMap) files from the `openstreetmap` directory, writes a road network graph to the `graphhopper` directory, and persists user data in a directory called `db`.
-Create a new directory dedicated to storing all of these data to make it easier to upgrade to a newer version of OptaWeb Vehicle Routing in the future and continue working with the data you created previously.
+Create a new directory dedicated to storing all of these data to make it easier to upgrade to a newer version of CobraFlow Vehicle Routing in the future and continue working with the data you created previously.
 
 .Procedure
 . Create the `openstreetmap` directory in your user account `home` directory, for example:
@@ -37,7 +37,7 @@ $HOME/{data-dir-name}
 
 . Move all of your downloaded OSM files (files with the extension `.osm.pbf`) to the `openstreetmap` directory.
 
-The rest of the directory structure will be created by the OptaWeb Vehicle Routing application when it runs for the first time.
+The rest of the directory structure will be created by the CobraFlow Vehicle Routing application when it runs for the first time.
 After that, your directory structure will look similar to the following example:
 
 // TODO maybe replace this with a screenshot, doesn't look good in PDF.
@@ -56,7 +56,7 @@ $HOME/{data-dir-name}
 
 .Prerequisites
 * Internet access is available.
-When OptaWeb Vehicle Routing runs it uses third-party public services such as link:https://www.openstreetmap.org/about[OpenStreetMap] to display map tiles and provide search results.
+When CobraFlow Vehicle Routing runs it uses third-party public services such as link:https://www.openstreetmap.org/about[OpenStreetMap] to display map tiles and provide search results.
 * Java 11 or higher is installed.
 * The data directory is created at `$HOME/{data-dir-name}`.
 * A subdirectory called `openstreetmap` with at least one OSM file exists.

@@ -29,7 +29,7 @@
   <artifactId>optaweb-vehicle-routing-frontend</artifactId>
   <packaging>war</packaging>
 
-  <name>OptaWeb Vehicle Routing Frontend</name>
+  <name>CobraFlow Vehicle Routing Frontend</name>
 
   <properties>
     <sonar.sources>src</sonar.sources>

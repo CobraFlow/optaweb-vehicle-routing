@@ -29,7 +29,7 @@
   <artifactId>optaweb-vehicle-routing-docs</artifactId>
   <packaging>pom</packaging>
 
-  <name>OptaWeb Vehicle Routing Documentation</name>
+  <name>CobraFlow Vehicle Routing Documentation</name>
 
   <build>
     <plugins>

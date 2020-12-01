@@ -4,8 +4,8 @@ exports[`Header component should match snapshot 1`] = `
 <PageHeader
   logo={
     <Brand
-      alt="OptaPlanner Logo"
-      src="./assets/images/optaPlannerLogo200px.png"
+      alt="CobraFlow Logo"
+      src="./assets/images/cobra_large.gif"
     />
   }
   topNav={<withRouter(Navigation) />}

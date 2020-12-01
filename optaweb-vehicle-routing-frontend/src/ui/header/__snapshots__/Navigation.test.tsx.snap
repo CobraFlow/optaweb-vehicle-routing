@@ -12,13 +12,13 @@ exports[`Navigation should activate a navigation link matching the current path 
   >
     <NavItem
       isActive={false}
-      itemId="/demo"
-      key="/demo"
+      itemId="/overview"
+      key="/overview"
     >
       <Link
-        to="/demo"
+        to="/overview"
       >
-        Demo
+        Overview
       </Link>
     </NavItem>
     <NavItem

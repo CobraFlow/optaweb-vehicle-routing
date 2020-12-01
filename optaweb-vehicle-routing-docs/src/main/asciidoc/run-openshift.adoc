@@ -1,7 +1,7 @@
 [[run-openshift]]
 = Run on OpenShift
 
-Linux and macOS users can use the `runOnOpenShift.sh` Bash script to install OptaWeb Vehicle Routing on OpenShift.
+Linux and macOS users can use the `runOnOpenShift.sh` Bash script to install CobraFlow Vehicle Routing on OpenShift.
 
 == Running on a local OpenShift cluster
 

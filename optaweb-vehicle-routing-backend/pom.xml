@@ -29,7 +29,7 @@
   <artifactId>optaweb-vehicle-routing-backend</artifactId>
   <packaging>jar</packaging>
 
-  <name>OptaWeb Vehicle Routing Backend</name>
+  <name>CobraFlow Vehicle Routing Backend</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

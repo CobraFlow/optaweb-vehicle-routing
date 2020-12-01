@@ -38,8 +38,8 @@ exports[`App should render correctly 1`] = `
             }
           }
           exact={true}
-          key="/demo"
-          path="/demo"
+          key="/overview"
+          path="/overview"
         />
         <Route
           component={

@@ -314,7 +314,7 @@ function interactive() {
     echo "Choose the next step:"
     echo "d:    Download new region."
     echo "q:    Quit."
-    [[ ${max} -ge 0 ]] && echo "0-$max: Select a region and run OptaWeb Vehicle Routing."
+    [[ ${max} -ge 0 ]] && echo "0-$max: Select a region and run CobraFlow Vehicle Routing."
 
     echo
     local -l command # -l converts to lower-case
@@ -347,7 +347,7 @@ function interactive() {
   echo "Region: $osm_file"
   echo "Country code list: $cc_list"
   echo
-  confirm "Do you want launch OptaWeb Vehicle Routing?" || abort
+  confirm "Do you want launch CobraFlow Vehicle Routing?" || abort
 
   standalone_jar_or_maven
   run_optaweb
@@ -360,7 +360,7 @@ function quickstart() {
   local -r osm_target=${osm_dir}/${osm_file}
   if [[ ! -f ${osm_target} ]]
   then
-    echo "OptaWeb Vehicle Routing needs an OSM file for distance calculation. \
+    echo "CobraFlow Vehicle Routing needs an OSM file for distance calculation. \
 It contains a built-in dataset for $osm_file, which does not exist in $osm_dir. \
 This script can download it for you from Geofabrik.de."
     confirm "Download $osm_file from Geofabrik.de now?" || abort

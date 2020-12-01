@@ -15,7 +15,7 @@ The standalone module is an assembly module that combines the back end and front
 The distribution module represents the final assembly step.
 It takes the standalone application and the documentation and wraps them in an archive that is easy to distribute.
 
-== Developing OptaWeb Vehicle Routing
+== Developing CobraFlow Vehicle Routing
 
 The back end and front end are separate projects that can be built and deployed separately.
 In fact, they are written in completely different languages and built with different tools.

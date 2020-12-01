@@ -1,4 +1,4 @@
-= Using OptaWeb Vehicle Routing
+= Using CobraFlow Vehicle Routing
 The OptaPlanner Team <https://www.optaplanner.org/community/team.html>
 :doctype: book
 :experimental:
@@ -10,8 +10,8 @@ The OptaPlanner Team <https://www.optaplanner.org/community/team.html>
 :toclevels: 3
 
 [.normal]
-As a developer, you can use OptaWeb Vehicle Routing to optimize your vehicle fleet deliveries.
-In this guide, you will create and run a sample OptaWeb Vehicle Routing application.
+As a developer, you can use CobraFlow Vehicle Routing to optimize your vehicle fleet deliveries.
+In this guide, you will create and run a sample CobraFlow Vehicle Routing application.
 
 include::introduction.adoc[leveloffset=+1]
 
