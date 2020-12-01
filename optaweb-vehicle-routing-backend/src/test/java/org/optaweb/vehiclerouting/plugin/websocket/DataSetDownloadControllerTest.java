@@ -35,6 +35,8 @@ import org.springframework.http.ResponseEntity;
 @ExtendWith(MockitoExtension.class)
 class DataSetDownloadControllerTest {
 
+    private final String problemName = "Testing problem";
+
     @Mock
     private DemoService demoService;
     @InjectMocks
@@ -44,10 +46,10 @@ class DataSetDownloadControllerTest {
     void export() throws IOException {
         // arrange
         String msg = "dummy string";
-        when(demoService.exportDataSet()).thenReturn(msg);
+        when(demoService.exportDataSet(problemName)).thenReturn(msg);
 
         // act
-        ResponseEntity<Resource> responseEntity = controller.exportDataSet();
+        ResponseEntity<Resource> responseEntity = controller.exportDataSet(problemName);
 
         // assert
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -71,10 +73,10 @@ class DataSetDownloadControllerTest {
 
         // arrange
         String msg = "অ";
-        when(demoService.exportDataSet()).thenReturn(msg);
+        when(demoService.exportDataSet(problemName)).thenReturn(msg);
 
         // act
-        ResponseEntity<Resource> responseEntity = controller.exportDataSet();
+        ResponseEntity<Resource> responseEntity = controller.exportDataSet(problemName);
 
         // assert
         assertThat(responseEntity.getHeaders().getContentLength()).isEqualTo(3);

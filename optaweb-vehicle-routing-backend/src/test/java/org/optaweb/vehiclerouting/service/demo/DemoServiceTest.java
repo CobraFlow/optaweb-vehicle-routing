@@ -121,10 +121,10 @@ class DemoServiceTest {
         when(locationRepository.locations()).thenReturn(Arrays.asList(depot, visit1, visit2));
         when(vehicleRepository.vehicles()).thenReturn(Arrays.asList(vehicle1, vehicle2));
 
-        demoService.exportDataSet();
+        demoService.exportDataSet(problemName);
 
         RoutingProblem routingProblem = verifyAndCaptureMarshalledProblem();
-        assertThat(routingProblem.name()).isNotNull();
+        assertThat(routingProblem.name()).isEqualTo(problemName);
         assertThat(routingProblem.depot()).contains(depot);
         assertThat(routingProblem.visits()).containsExactly(visit1, visit2);
         assertThat(routingProblem.vehicles()).containsExactly(vehicle1, vehicle2);
@@ -135,10 +135,10 @@ class DemoServiceTest {
         when(locationRepository.locations()).thenReturn(Collections.emptyList());
         when(vehicleRepository.vehicles()).thenReturn(Collections.emptyList());
 
-        demoService.exportDataSet();
+        demoService.exportDataSet(problemName);
 
         RoutingProblem routingProblem = verifyAndCaptureMarshalledProblem();
-        assertThat(routingProblem.name()).isNotNull();
+        assertThat(routingProblem.name()).isEqualTo(problemName);
         assertThat(routingProblem.depot()).isEmpty();
         assertThat(routingProblem.visits()).isEmpty();
         assertThat(routingProblem.vehicles()).isEmpty();

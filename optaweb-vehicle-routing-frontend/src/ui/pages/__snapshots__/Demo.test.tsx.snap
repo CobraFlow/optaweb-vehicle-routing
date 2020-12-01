@@ -163,6 +163,48 @@ exports[`Demo page clear and export buttons should be disabled when demo is load
         </Component>
       </FlexItem>
     </Flex>
+    <Modal
+      actions={
+        Array [
+          <Unknown
+            id="save-button"
+            onClick={[Function]}
+            variant="primary"
+          >
+            Save
+          </Unknown>,
+          <Unknown
+            id="cancel-button"
+            onClick={[Function]}
+            variant="link"
+          >
+            Cancel
+          </Unknown>,
+        ]
+      }
+      appendTo={<body />}
+      ariaDescribedById=""
+      className=""
+      hideTitle={false}
+      isFooterLeftAligned={false}
+      isLarge={false}
+      isOpen={false}
+      isSmall={true}
+      onClose={[Function]}
+      showClose={true}
+      title="Export"
+    >
+      <Form>
+        <ForwardRef
+          className="popup-input"
+          id="input-description"
+          onChange={[Function]}
+          title="Description"
+          type="text"
+          value=""
+        />
+      </Form>
+    </Modal>
     <RouteMap
       boundingBox={null}
       clickHandler={[Function]}
@@ -385,6 +427,48 @@ exports[`Demo page clear button should replace demo dropdown as soon as there is
         </Component>
       </FlexItem>
     </Flex>
+    <Modal
+      actions={
+        Array [
+          <Unknown
+            id="save-button"
+            onClick={[Function]}
+            variant="primary"
+          >
+            Save
+          </Unknown>,
+          <Unknown
+            id="cancel-button"
+            onClick={[Function]}
+            variant="link"
+          >
+            Cancel
+          </Unknown>,
+        ]
+      }
+      appendTo={<body />}
+      ariaDescribedById=""
+      className=""
+      hideTitle={false}
+      isFooterLeftAligned={false}
+      isLarge={false}
+      isOpen={false}
+      isSmall={true}
+      onClose={[Function]}
+      showClose={true}
+      title="Export"
+    >
+      <Form>
+        <ForwardRef
+          className="popup-input"
+          id="input-description"
+          onChange={[Function]}
+          title="Description"
+          type="text"
+          value=""
+        />
+      </Form>
+    </Modal>
     <RouteMap
       boundingBox={null}
       clickHandler={[Function]}
@@ -580,6 +664,48 @@ exports[`Demo page should render correctly with a few routes 1`] = `
         </Component>
       </FlexItem>
     </Flex>
+    <Modal
+      actions={
+        Array [
+          <Unknown
+            id="save-button"
+            onClick={[Function]}
+            variant="primary"
+          >
+            Save
+          </Unknown>,
+          <Unknown
+            id="cancel-button"
+            onClick={[Function]}
+            variant="link"
+          >
+            Cancel
+          </Unknown>,
+        ]
+      }
+      appendTo={<body />}
+      ariaDescribedById=""
+      className=""
+      hideTitle={false}
+      isFooterLeftAligned={false}
+      isLarge={false}
+      isOpen={false}
+      isSmall={true}
+      onClose={[Function]}
+      showClose={true}
+      title="Export"
+    >
+      <Form>
+        <ForwardRef
+          className="popup-input"
+          id="input-description"
+          onChange={[Function]}
+          title="Description"
+          type="text"
+          value=""
+        />
+      </Form>
+    </Modal>
     <RouteMap
       boundingBox={null}
       clickHandler={[Function]}
@@ -789,6 +915,48 @@ exports[`Demo page should render correctly with no routes 1`] = `
         />
       </FlexItem>
     </Flex>
+    <Modal
+      actions={
+        Array [
+          <Unknown
+            id="save-button"
+            onClick={[Function]}
+            variant="primary"
+          >
+            Save
+          </Unknown>,
+          <Unknown
+            id="cancel-button"
+            onClick={[Function]}
+            variant="link"
+          >
+            Cancel
+          </Unknown>,
+        ]
+      }
+      appendTo={<body />}
+      ariaDescribedById=""
+      className=""
+      hideTitle={false}
+      isFooterLeftAligned={false}
+      isLarge={false}
+      isOpen={false}
+      isSmall={true}
+      onClose={[Function]}
+      showClose={true}
+      title="Export"
+    >
+      <Form>
+        <ForwardRef
+          className="popup-input"
+          id="input-description"
+          onChange={[Function]}
+          title="Description"
+          type="text"
+          value=""
+        />
+      </Form>
+    </Modal>
     <RouteMap
       boundingBox={null}
       clickHandler={[Function]}

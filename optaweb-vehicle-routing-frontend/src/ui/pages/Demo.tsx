@@ -20,13 +20,16 @@ import {
   Flex,
   FlexItem,
   FlexModifiers,
+  Form,
   GutterSize,
   InputGroup,
   InputGroupText,
+  Modal,
   Split,
   SplitItem,
   Text,
   TextContent,
+  TextInput,
   TextVariants,
 } from '@patternfly/react-core';
 import { MinusIcon, PlusIcon } from '@patternfly/react-icons';
@@ -103,6 +106,8 @@ export type DemoProps = DispatchProps & StateProps;
 
 export interface DemoState {
   selectedId: number;
+  modalOpen: boolean;
+  title: string;
 }
 
 export class Demo extends React.Component<DemoProps, DemoState> {
@@ -111,6 +116,8 @@ export class Demo extends React.Component<DemoProps, DemoState> {
 
     this.state = {
       selectedId: NaN,
+      modalOpen: false,
+      title: '',
     };
     this.handleDemoLoadClick = this.handleDemoLoadClick.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
@@ -156,7 +163,8 @@ export class Demo extends React.Component<DemoProps, DemoState> {
     } = this.props;
 
     const exportDataSet = () => {
-      window.open(`${backendUrl}/dataset/export`);
+      window.open(`${backendUrl}/dataset/export?title=${this.state.title}`);
+      this.setState({ modalOpen: false });
     };
 
     return (
@@ -226,7 +234,9 @@ export class Demo extends React.Component<DemoProps, DemoState> {
                 id={ID_EXPORT_BUTTON}
                 isDisabled={!depot || isDemoLoading}
                 style={{ marginBottom: 16, marginLeft: 16 }}
-                onClick={exportDataSet}
+                onClick={() => {
+                  this.setState({ modalOpen: true });
+                }}
               >
                 Export
               </Button>
@@ -248,6 +258,43 @@ export class Demo extends React.Component<DemoProps, DemoState> {
               )}
             </FlexItem>
           </Flex>
+          <Modal
+            title="Export"
+            isOpen={this.state.modalOpen}
+            isSmall
+            actions={[
+              <Button
+                id="save-button"
+                variant="primary"
+                onClick={exportDataSet}
+              >
+                Save
+              </Button>,
+              <Button
+                id="cancel-button"
+                variant="link"
+                onClick={() => {
+                  this.setState({ modalOpen: false });
+                }}
+              >
+                Cancel
+              </Button>,
+            ]}
+          >
+            <Form>
+              <TextInput
+                title="Description"
+                id="input-description"
+                className="popup-input"
+                type="text"
+                value={this.state.title}
+                onChange={(value) => {
+                  this.setState({ title: value });
+                }}
+              />
+            </Form>
+          </Modal>
+
           <RouteMap
             boundingBox={boundingBox}
             userViewport={userViewport}

@@ -90,12 +90,12 @@ public class DemoService {
         }
     }
 
-    public String exportDataSet() {
+    public String exportDataSet(String title) {
         // FIXME still relying on the fact that the first location in the repository is the depot
         List<Location> visits = new ArrayList<>(locationRepository.locations());
         Location depot = visits.isEmpty() ? null : visits.remove(0);
         List<Vehicle> vehicles = vehicleRepository.vehicles();
         return dataSetMarshaller.marshal(new RoutingProblem(
-                "Custom Vehicle Routing instance", vehicles, depot, visits));
+                title, vehicles, depot, visits));
     }
 }

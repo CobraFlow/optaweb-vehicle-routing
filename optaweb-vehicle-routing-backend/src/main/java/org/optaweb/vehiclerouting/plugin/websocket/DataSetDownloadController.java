@@ -30,6 +30,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -46,13 +47,13 @@ class DataSetDownloadController {
 
     @GetMapping(value = "/dataset/export")
     @ResponseBody
-    public ResponseEntity<Resource> exportDataSet() throws IOException {
-        String dataSet = demoService.exportDataSet();
+    public ResponseEntity<Resource> exportDataSet(@RequestParam(name = "title") String title) throws IOException {
+        String dataSet = demoService.exportDataSet(title);
         byte[] dataSetBytes = dataSet.getBytes(StandardCharsets.UTF_8);
         try (InputStream is = new ByteArrayInputStream(dataSetBytes)) {
             HttpHeaders headers = new HttpHeaders();
             ContentDisposition attachment = ContentDisposition.builder("attachment")
-                    .filename("vrp_data_set.yaml")
+                    .filename(title + ".yaml")
                     .build();
             headers.setContentDisposition(attachment);
             return ResponseEntity.ok()
