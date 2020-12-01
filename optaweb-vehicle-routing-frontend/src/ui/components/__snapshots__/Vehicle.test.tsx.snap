@@ -5,6 +5,55 @@ exports[`Vehicle Component should render correctly 1`] = `
   aria-labelledby="vehicle-10"
   isExpanded={false}
 >
+  <Modal
+    actions={
+      Array [
+        <Unknown
+          id="save-button"
+          onClick={[Function]}
+          variant="primary"
+        >
+          Save
+        </Unknown>,
+        <Unknown
+          id="remove-button"
+          onClick={[Function]}
+          variant="link"
+        >
+          Remove
+        </Unknown>,
+        <Unknown
+          id="cancel-button"
+          onClick={[Function]}
+          variant="link"
+        >
+          Cancel
+        </Unknown>,
+      ]
+    }
+    appendTo={<body />}
+    ariaDescribedById=""
+    className=""
+    hideTitle={false}
+    isFooterLeftAligned={false}
+    isLarge={false}
+    isOpen={false}
+    isSmall={true}
+    onClose={[Function]}
+    showClose={true}
+    title="Edit Vehicle"
+  >
+    <Form>
+      <ForwardRef
+        className="popup-input"
+        id="input-description"
+        onChange={[Function]}
+        title="Description"
+        type="text"
+        value="x"
+      />
+    </Form>
+  </Modal>
   <DataListItemRow>
     <DataListCell
       isFilled={true}
@@ -54,20 +103,35 @@ exports[`Vehicle Component should render correctly 1`] = `
     <DataListCell
       isFilled={false}
     >
-      <Component
-        data-test-key="remove-10"
-        isDisabled={false}
-        onClick={[Function]}
-        type="button"
-        variant="link"
-      >
-        <TimesIcon
-          color="currentColor"
-          noVerticalAlign={false}
-          size="sm"
-          title={null}
-        />
-      </Component>
+      <InputGroup>
+        <Component
+          data-test-key="edit-10"
+          onClick={[Function]}
+          type="button"
+          variant="link"
+        >
+          <PencilAltIcon
+            color="currentColor"
+            noVerticalAlign={false}
+            size="sm"
+            title={null}
+          />
+        </Component>
+        <Component
+          data-test-key="remove-10"
+          isDisabled={false}
+          onClick={[Function]}
+          type="button"
+          variant="link"
+        >
+          <TimesIcon
+            color="currentColor"
+            noVerticalAlign={false}
+            size="sm"
+            title={null}
+          />
+        </Component>
+      </InputGroup>
     </DataListCell>
   </DataListItemRow>
 </DataListItem>

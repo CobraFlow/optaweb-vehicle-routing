@@ -63,6 +63,7 @@ export enum ActionType {
   UPDATE_LOCATION = 'UPDATE_LOCATION',
   ADD_VEHICLE = 'ADD_VEHICLE',
   DELETE_VEHICLE = 'DELETE_VEHICLE',
+  UPDATE_VEHICLE = 'UPDATE_VEHICLE',
   CLEAR_SOLUTION = 'CLEAR_SOLUTION',
 }
 
@@ -86,6 +87,10 @@ export interface DeleteLocationAction extends Action<ActionType.DELETE_LOCATION>
 
 export interface DeleteVehicleAction extends Action<ActionType.DELETE_VEHICLE> {
   readonly value: number;
+}
+
+export interface UpdateVehicleAction extends Action<ActionType.UPDATE_VEHICLE> {
+  readonly value: Vehicle;
 }
 
 export interface VehicleCapacity {

@@ -30,7 +30,6 @@ import org.optaweb.vehiclerouting.service.location.RouteOptimizer;
 import org.optaweb.vehiclerouting.service.region.BoundingBox;
 import org.optaweb.vehiclerouting.service.region.RegionService;
 import org.optaweb.vehiclerouting.service.route.RouteListener;
-import org.optaweb.vehiclerouting.service.route.RoutingPlanConsumer;
 import org.optaweb.vehiclerouting.service.vehicle.VehicleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,11 +57,12 @@ class WebSocketController {
     private final VehicleService vehicleService;
     private final DemoService demoService;
     private final ApplicationEventPublisher eventPublisher;
+    private final RouteOptimizer optimizer;
 
-    @Autowired
-    private RoutingPlanConsumer planConsumer;
-    @Autowired
-    private RouteOptimizer optimizer;
+    /*
+     * @Autowired
+     * private RoutingPlanConsumer planConsumer;
+     */
 
     @Autowired
     WebSocketController(
@@ -71,13 +71,15 @@ class WebSocketController {
             LocationService locationService,
             VehicleService vehicleService,
             DemoService demoService,
-            ApplicationEventPublisher eventPublisher) {
+            ApplicationEventPublisher eventPublisher,
+            RouteOptimizer optimizer) {
         this.routeListener = routeListener;
         this.regionService = regionService;
         this.locationService = locationService;
         this.vehicleService = vehicleService;
         this.demoService = demoService;
         this.eventPublisher = eventPublisher;
+        this.optimizer = optimizer;
     }
 
     @MessageExceptionHandler
@@ -168,7 +170,7 @@ class WebSocketController {
         vehicleService.removeAll();
     }
 
-    @MessageMapping("vehicle")
+    @MessageMapping("/vehicle")
     void addVehicle() {
         vehicleService.createVehicle();
     }
@@ -181,6 +183,18 @@ class WebSocketController {
     @MessageMapping("/vehicle/{id}/delete")
     void removeVehicle(@DestinationVariable long id) {
         vehicleService.removeVehicle(id);
+    }
+
+    /**
+     * Update vehicle.
+     *
+     * @param id ID of the location to be updated
+     * @param request updated location
+     */
+    @MessageMapping("/vehicle/{id}")
+    void updateVehicle(@DestinationVariable long id, PortableVehicle request) {
+        vehicleService.updateVehicle(id, request.getName());
+        optimizer.nopChange();
     }
 
     @MessageMapping("/vehicle/deleteAny")

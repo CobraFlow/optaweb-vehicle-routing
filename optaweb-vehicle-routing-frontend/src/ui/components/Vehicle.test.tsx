@@ -28,6 +28,7 @@ describe('Vehicle Component', () => {
       description: 'x',
       capacity: 7,
       removeHandler: jest.fn(),
+      updateHandler: jest.fn(),
       capacityChangeHandler: jest.fn(),
     };
     const vehicle = shallow(<Vehicle {...props} />);

@@ -20,12 +20,16 @@ import java.util.Objects;
 
 import org.optaweb.vehiclerouting.domain.Vehicle;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * {@link Vehicle} representation suitable for network transport.
  */
 class PortableVehicle {
 
     private final long id;
+
     private final String name;
     private final int capacity;
 
@@ -34,7 +38,11 @@ class PortableVehicle {
         return new PortableVehicle(vehicle.id(), vehicle.name(), vehicle.capacity());
     }
 
-    PortableVehicle(long id, String name, int capacity) {
+    @JsonCreator
+    PortableVehicle(
+            @JsonProperty(value = "id") long id,
+            @JsonProperty(value = "name") String name,
+            @JsonProperty(value = "capacity") int capacity) {
         this.id = id;
         this.name = Objects.requireNonNull(name);
         this.capacity = capacity;

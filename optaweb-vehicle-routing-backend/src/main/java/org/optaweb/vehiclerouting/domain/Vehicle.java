@@ -23,7 +23,7 @@ public class Vehicle extends VehicleData {
 
     private final long id;
 
-    Vehicle(long id, String name, int capacity) {
+    public Vehicle(long id, String name, int capacity) {
         super(name, capacity);
         this.id = id;
     }

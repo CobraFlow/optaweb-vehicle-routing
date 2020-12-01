@@ -27,6 +27,8 @@ import {
   LatLngWithDescription,
   RoutingPlan,
   UpdateRouteAction,
+  UpdateVehicleAction,
+  Vehicle,
 } from './types';
 
 export const addVehicle: ActionFactory<void, AddVehicleAction> = () => ({
@@ -36,6 +38,11 @@ export const addVehicle: ActionFactory<void, AddVehicleAction> = () => ({
 export const deleteVehicle: ActionFactory<number, DeleteVehicleAction> = (id) => ({
   type: ActionType.DELETE_VEHICLE,
   value: id,
+});
+
+export const updateVehicle: ActionFactory<Vehicle, UpdateVehicleAction> = (vehicle) => ({
+  type: ActionType.UPDATE_VEHICLE,
+  value: vehicle,
 });
 
 export const addLocation: ActionFactory<LatLngWithDescription, AddLocationAction> = (location) => ({

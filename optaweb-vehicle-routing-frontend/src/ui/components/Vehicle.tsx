@@ -20,18 +20,29 @@ import {
   DataListCell,
   DataListItem,
   DataListItemRow,
+  Form,
   InputGroup,
   InputGroupText,
+  Modal,
+  TextInput,
 } from '@patternfly/react-core';
-import { MinusIcon, PlusIcon, TimesIcon } from '@patternfly/react-icons';
+import { MinusIcon, PencilAltIcon, PlusIcon, TimesIcon } from '@patternfly/react-icons';
 import * as React from 'react';
 import { VehicleCapacity } from 'store/route/types';
+
+// RLH - Had to add this as we declare Vehicle in this file!
+export interface VehicleType {
+  readonly id: number;
+  readonly name: string;
+  readonly capacity: number;
+}
 
 export interface VehicleProps {
   id: number;
   description: string;
   capacity: number;
   removeHandler: (id: number) => void;
+  updateHandler: (vehicle: VehicleType) => void;
   capacityChangeHandler: (vehicleCapacity: VehicleCapacity) => void;
 }
 
@@ -40,15 +51,50 @@ const Vehicle: React.FC<VehicleProps> = ({
   description,
   capacity,
   removeHandler,
+  updateHandler,
   capacityChangeHandler,
 }) => {
   const [clicked, setClicked] = React.useState(false);
+  const [editing, setEditing] = React.useState(false);
+  const [desc, setDesc] = React.useState(description);
+
+  function saveHandler() {
+    updateHandler({
+      id,
+      name: desc,
+      capacity,
+    });
+    setEditing(false);
+  }
 
   return (
     <DataListItem
       isExpanded={false}
       aria-labelledby={`vehicle-${id}`}
     >
+      <Modal
+        title="Edit Vehicle"
+        isOpen={editing}
+        isSmall
+        actions={[
+          <Button id="save-button" variant="primary" onClick={saveHandler}>Save</Button>,
+          <Button id="remove-button" variant="link" onClick={() => { removeHandler(id); }}>Remove</Button>,
+          <Button id="cancel-button" variant="link" onClick={() => { setEditing(false); }}>Cancel</Button>,
+        ]}
+      >
+        <Form>
+          <TextInput
+            title="Description"
+            id="input-description"
+            className="popup-input"
+            type="text"
+            value={desc}
+            onChange={(value) => {
+              setDesc(value);
+            }}
+          />
+        </Form>
+      </Modal>
       <DataListItemRow>
         <DataListCell isFilled>
           <span id={`vehicle-${id}`}>{description}</span>
@@ -76,18 +122,30 @@ const Vehicle: React.FC<VehicleProps> = ({
           </InputGroup>
         </DataListCell>
         <DataListCell isFilled={false}>
-          <Button
-            type="button"
-            variant="link"
-            data-test-key={`remove-${id}`}
-            isDisabled={clicked}
-            onClick={() => {
-              setClicked(true);
-              removeHandler(id);
-            }}
-          >
-            <TimesIcon />
-          </Button>
+          <InputGroup>
+            <Button
+              type="button"
+              variant="link"
+              data-test-key={`edit-${id}`}
+              onClick={() => {
+                setEditing(true);
+              }}
+            >
+              <PencilAltIcon />
+            </Button>
+            <Button
+              type="button"
+              variant="link"
+              data-test-key={`remove-${id}`}
+              isDisabled={clicked}
+              onClick={() => {
+                setClicked(true);
+                removeHandler(id);
+              }}
+            >
+              <TimesIcon />
+            </Button>
+          </InputGroup>
         </DataListCell>
       </DataListItemRow>
     </DataListItem>

@@ -54,6 +54,7 @@ exports[`Vehicles page should render correctly 1`] = `
         id={1}
         key="1"
         removeHandler={[MockFunction]}
+        updateHandler={[MockFunction]}
       />
       <Vehicle
         capacity={5}
@@ -62,6 +63,7 @@ exports[`Vehicles page should render correctly 1`] = `
         id={2}
         key="2"
         removeHandler={[MockFunction]}
+        updateHandler={[MockFunction]}
       />
     </DataList>
   </div>

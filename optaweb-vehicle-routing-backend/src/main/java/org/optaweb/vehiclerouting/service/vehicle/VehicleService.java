@@ -24,8 +24,10 @@ import java.util.Optional;
 import org.optaweb.vehiclerouting.domain.Vehicle;
 import org.optaweb.vehiclerouting.domain.VehicleData;
 import org.optaweb.vehiclerouting.domain.VehicleFactory;
+import org.optaweb.vehiclerouting.service.error.ErrorEvent;
 import org.optaweb.vehiclerouting.service.location.RouteOptimizer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,11 +37,15 @@ public class VehicleService {
 
     private final RouteOptimizer optimizer;
     private final VehicleRepository vehicleRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    public VehicleService(RouteOptimizer optimizer, VehicleRepository vehicleRepository) {
+    public VehicleService(RouteOptimizer optimizer,
+            VehicleRepository vehicleRepository,
+            ApplicationEventPublisher eventPublisher) {
         this.optimizer = optimizer;
         this.vehicleRepository = vehicleRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public void createVehicle() {
@@ -59,6 +65,21 @@ public class VehicleService {
     public void removeVehicle(long vehicleId) {
         Vehicle vehicle = vehicleRepository.removeVehicle(vehicleId);
         optimizer.removeVehicle(vehicle);
+    }
+
+    public void updateVehicle(long id, String name) {
+        Optional<Vehicle> optionalVehicle = vehicleRepository.find(id);
+        if (!optionalVehicle.isPresent()) {
+            eventPublisher.publishEvent(
+                    new ErrorEvent(this, "Vehicle [" + id + "] cannot be updated because it doesn't exist."));
+            return;
+        }
+        Vehicle vehicle = optionalVehicle.get();
+        vehicle = new Vehicle(
+                vehicle.id(),
+                name,
+                vehicle.capacity());
+        vehicleRepository.update(vehicle);
     }
 
     public synchronized void removeAnyVehicle() {
