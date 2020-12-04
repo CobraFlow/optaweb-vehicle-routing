@@ -63,16 +63,14 @@ class LocationPopup extends React.Component<Props, State> {
 
   render() {
     const { description } = this.state;
-    const { id } = this.props.location;
 
     return (
       <Popup
         minWidth={300}
+        closeButton={false}
+        closeOnClick={false}
+        closeOnEscapeKey={false}
       >
-        <span>
-          {`id ${id}, description=${description}`}
-        </span>
-        <br />
         <Form>
           <FormGroup
             fieldId="popup-form"

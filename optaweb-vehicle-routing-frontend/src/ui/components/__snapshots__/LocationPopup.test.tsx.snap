@@ -2,12 +2,11 @@
 
 exports[`Location Popup render description 1`] = `
 <ForwardRef(Leaflet(Popup))
+  closeButton={false}
+  closeOnClick={false}
+  closeOnEscapeKey={false}
   minWidth={300}
 >
-  <span>
-    id 1, description=location1
-  </span>
-  <br />
   <Form>
     <FormGroup
       fieldId="popup-form"
