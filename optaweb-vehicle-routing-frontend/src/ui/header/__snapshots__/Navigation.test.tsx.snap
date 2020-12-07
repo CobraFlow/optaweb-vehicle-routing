@@ -12,44 +12,44 @@ exports[`Navigation should activate a navigation link matching the current path 
   >
     <NavItem
       isActive={false}
-      itemId="/overview"
-      key="/overview"
+      itemId="/vrp/overview"
+      key="/vrp/overview"
     >
       <Link
-        to="/overview"
+        to="/vrp/overview"
       >
         Overview
       </Link>
     </NavItem>
     <NavItem
       isActive={false}
-      itemId="/vehicles"
-      key="/vehicles"
+      itemId="/vrp/vehicles"
+      key="/vrp/vehicles"
     >
       <Link
-        to="/vehicles"
+        to="/vrp/vehicles"
       >
         Vehicles
       </Link>
     </NavItem>
     <NavItem
       isActive={true}
-      itemId="/visits"
-      key="/visits"
+      itemId="/vrp/visits"
+      key="/vrp/visits"
     >
       <Link
-        to="/visits"
+        to="/vrp/visits"
       >
         Visits
       </Link>
     </NavItem>
     <NavItem
       isActive={false}
-      itemId="/routes"
-      key="/routes"
+      itemId="/vrp/routes"
+      key="/vrp/routes"
     >
       <Link
-        to="/routes"
+        to="/vrp/routes"
       >
         Routes
       </Link>

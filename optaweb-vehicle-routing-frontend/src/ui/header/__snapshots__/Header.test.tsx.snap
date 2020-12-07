@@ -8,6 +8,7 @@ exports[`Header component should match snapshot 1`] = `
       src="./assets/images/cobra_large.gif"
     />
   }
+  toolbar={<Toolsbar />}
   topNav={<withRouter(Navigation) />}
 />
 `;

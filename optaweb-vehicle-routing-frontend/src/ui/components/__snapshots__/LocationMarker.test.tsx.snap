@@ -14,7 +14,7 @@ exports[`Location Marker render depot 1`] = `
           24,
           24,
         ],
-        "iconUrl": "if_big_house-home_2222740.png",
+        "iconUrl": "assets/images/if_big_house-home_2222740.png",
         "popupAnchor": Array [
           0,
           -10,
@@ -27,7 +27,7 @@ exports[`Location Marker render depot 1`] = `
           50,
           16,
         ],
-        "shadowUrl": "if_big_house-home_2222740_shadow.png",
+        "shadowUrl": "assets/images/if_big_house-home_2222740_shadow.png",
       },
     }
   }

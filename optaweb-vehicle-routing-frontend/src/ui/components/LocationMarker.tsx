@@ -24,11 +24,11 @@ import LocationPopup from './LocationPopup';
 const homeIcon = L.icon({
   iconAnchor: [12, 12],
   iconSize: [24, 24],
-  iconUrl: 'if_big_house-home_2222740.png',
+  iconUrl: 'assets/images/if_big_house-home_2222740.png',
   popupAnchor: [0, -10],
   shadowAnchor: [16, 2],
   shadowSize: [50, 16],
-  shadowUrl: 'if_big_house-home_2222740_shadow.png',
+  shadowUrl: 'assets/images/if_big_house-home_2222740_shadow.png',
 });
 
 const defaultIcon = new L.Icon.Default();

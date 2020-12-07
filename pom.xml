@@ -95,6 +95,15 @@
         <artifactId>nv-i18n</artifactId>
         <version>${version.com.neovisionaries}</version>
       </dependency>
+
+      <!-- RLH -->
+      <dependency>
+        <groupId>org.keycloak.bom</groupId>
+        <artifactId>keycloak-adapter-bom</artifactId>
+        <version>11.0.3</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
