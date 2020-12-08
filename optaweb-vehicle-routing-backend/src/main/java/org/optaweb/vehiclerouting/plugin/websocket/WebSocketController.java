@@ -16,11 +16,6 @@
 
 package org.optaweb.vehiclerouting.plugin.websocket;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.Arrays;
-import java.util.List;
-
 import org.optaweb.vehiclerouting.domain.Coordinates;
 import org.optaweb.vehiclerouting.domain.RoutingPlan;
 import org.optaweb.vehiclerouting.service.demo.DemoService;
@@ -41,13 +36,17 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 /**
  * Handles WebSocket subscriptions and STOMP messages.
  *
  * @see WebSocketConfig
  */
 @Controller
-//@MessageMapping("/secured")
 class WebSocketController {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
@@ -144,7 +143,7 @@ class WebSocketController {
     /**
      * Update location.
      *
-     * @param id ID of the location to be updated
+     * @param id      ID of the location to be updated
      * @param request updated location
      */
     @MessageMapping("/location/{id}")
@@ -189,7 +188,7 @@ class WebSocketController {
     /**
      * Update vehicle.
      *
-     * @param id ID of the location to be updated
+     * @param id      ID of the location to be updated
      * @param request updated location
      */
     @MessageMapping("/vehicle/{id}")
