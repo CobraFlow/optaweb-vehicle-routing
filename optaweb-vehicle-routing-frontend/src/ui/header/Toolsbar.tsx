@@ -14,17 +14,34 @@
  * limitations under the License.
  */
 
-import { Brand, PageHeader } from '@patternfly/react-core';
+import {
+  Button,
+  Toolbar,
+  ToolbarGroup,
+  ToolbarItem,
+} from '@patternfly/react-core';
 import * as React from 'react';
-import NavigationWithRouter from './Navigation';
-import Toolsbar from './Toolsbar';
+import { backendUrl } from '../../common';
 
-const Header: React.FC = () => (
-  <PageHeader
-    logo={<Brand src="./assets/images/cobra_large.gif" alt="CobraFlow Logo" />}
-    topNav={<NavigationWithRouter />}
-    toolbar={<Toolsbar />}
-  />
+function logoutHandler() {
+  console.log('Logging out!');
+  window.location.href = `${backendUrl}/logout`;
+}
+
+const Toolsbar = () => (
+  <Toolbar>
+    <ToolbarGroup>
+      <ToolbarItem>
+        <Button
+          id="logout-button"
+          variant="link"
+          onClick={logoutHandler}
+        >
+          Logout
+        </Button>
+      </ToolbarItem>
+    </ToolbarGroup>
+  </Toolbar>
 );
 
-export default Header;
+export default Toolsbar;

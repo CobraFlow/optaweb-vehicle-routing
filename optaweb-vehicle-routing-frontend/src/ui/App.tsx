@@ -25,10 +25,10 @@ import Header from './header/Header';
 import { Demo, Route as RoutePage, Vehicles, Visits } from './pages';
 
 export const pagesByPath = [
-  { path: { canonical: '/overview', aliases: ['/'] }, page: Demo, label: 'Overview' },
-  { path: { canonical: '/vehicles', aliases: [] }, page: Vehicles, label: 'Vehicles' },
-  { path: { canonical: '/visits', aliases: [] }, page: Visits, label: 'Visits' },
-  { path: { canonical: '/routes', aliases: [] }, page: RoutePage, label: 'Routes' },
+  { path: { canonical: '/vrp/overview', aliases: ['/vrp/'] }, page: Demo, label: 'Overview' },
+  { path: { canonical: '/vrp/vehicles', aliases: [] }, page: Vehicles, label: 'Vehicles' },
+  { path: { canonical: '/vrp/visits', aliases: [] }, page: Visits, label: 'Visits' },
+  { path: { canonical: '/vrp/routes', aliases: [] }, page: RoutePage, label: 'Routes' },
 ];
 
 const App: React.FC = () => (

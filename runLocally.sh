@@ -108,7 +108,10 @@ function run_optaweb() {
   else
     [[ ${cc_list} != "??" ]] && args+=("--app.region.country-codes=$cc_list")
   fi
-  java "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" -jar "$jar" "${args[@]}"
+  java \
+    "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" \
+    "-Dspring.profiles.active=local,keycloak,debugZ" \
+    -jar "$jar" "${args[@]}"
 }
 
 function download() {

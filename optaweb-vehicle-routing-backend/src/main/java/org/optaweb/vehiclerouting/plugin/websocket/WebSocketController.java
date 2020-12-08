@@ -47,6 +47,7 @@ import org.springframework.stereotype.Controller;
  * @see WebSocketConfig
  */
 @Controller
+//@MessageMapping("/secured")
 class WebSocketController {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);

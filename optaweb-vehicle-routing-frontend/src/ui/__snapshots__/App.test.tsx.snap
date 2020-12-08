@@ -38,8 +38,8 @@ exports[`App should render correctly 1`] = `
             }
           }
           exact={true}
-          key="/overview"
-          path="/overview"
+          key="/vrp/overview"
+          path="/vrp/overview"
         />
         <Route
           component={
@@ -52,8 +52,8 @@ exports[`App should render correctly 1`] = `
             }
           }
           exact={true}
-          key="/"
-          path="/"
+          key="/vrp/"
+          path="/vrp/"
         />
         <Route
           component={
@@ -66,8 +66,8 @@ exports[`App should render correctly 1`] = `
             }
           }
           exact={true}
-          key="/vehicles"
-          path="/vehicles"
+          key="/vrp/vehicles"
+          path="/vrp/vehicles"
         />
         <Route
           component={
@@ -80,8 +80,8 @@ exports[`App should render correctly 1`] = `
             }
           }
           exact={true}
-          key="/visits"
-          path="/visits"
+          key="/vrp/visits"
+          path="/vrp/visits"
         />
         <Route
           component={
@@ -94,8 +94,8 @@ exports[`App should render correctly 1`] = `
             }
           }
           exact={true}
-          key="/routes"
-          path="/routes"
+          key="/vrp/routes"
+          path="/vrp/routes"
         />
       </Switch>
     </PageSection>

@@ -61,7 +61,7 @@ describe('WebSocketClient', () => {
     expect(over).toHaveBeenCalled();
 
     expect(mockClient.connect).toHaveBeenCalledTimes(1);
-    expect(mockClient.connect.mock.calls[0][0]).toEqual({});
+    expect(mockClient.connect.mock.calls[0][0]).toEqual({ 'X-XSRF-TOKEN': '' });
     expect(mockClient.connect.mock.calls[0][1]).toEqual(onSuccess);
     expect(mockClient.connect.mock.calls[0][2]).toEqual(onError);
   });
@@ -85,7 +85,9 @@ describe('WebSocketClient', () => {
     client.connect(onSuccess, onError);
     client.deleteLocation(locationId);
 
-    expect(mockClient.send).toHaveBeenCalledWith(`/app/location/${locationId}/delete`, JSON.stringify(locationId));
+    expect(mockClient.send).toHaveBeenCalledWith(
+      `/app/location/${locationId}/delete`, JSON.stringify(locationId),
+    );
   });
 
   it('addVehicle() should add vehicle', () => {
@@ -118,7 +120,9 @@ describe('WebSocketClient', () => {
     client.connect(onSuccess, onError);
     client.changeVehicleCapacity(vehicleId, capacity);
 
-    expect(mockClient.send).toHaveBeenCalledWith(`/app/vehicle/${vehicleId}/capacity`, JSON.stringify(capacity));
+    expect(mockClient.send).toHaveBeenCalledWith(
+      `/app/vehicle/${vehicleId}/capacity`, JSON.stringify(capacity),
+    );
   });
 
   it('loadDemo() should send demo name', () => {

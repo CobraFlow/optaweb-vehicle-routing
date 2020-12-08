@@ -57,10 +57,12 @@ exports[`Connection Error Component should render correctly 1`] = `
         The server is expected to be running at
          
         <a
-          href=""
+          href="http://LocalHost/vrp"
           rel="noopener noreferrer"
           target="_blank"
-        />
+        >
+          http://LocalHost/vrp
+        </a>
          
         but the connection failed.
       </Text>

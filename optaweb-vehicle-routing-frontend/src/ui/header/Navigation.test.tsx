@@ -26,11 +26,11 @@ describe('Navigation', () => {
   it('should activate a navigation link matching the current path', () => {
     const props: RouteComponentProps = {
       location: {
-        pathname: '/visits',
+        pathname: '/vrp/visits',
       } as Location<unknown>,
     } as RouteComponentProps;
 
-    const visitsId = '/visits';
+    const visitsId = '/vrp/visits';
 
     const navigation = shallow(<Navigation {...props} />);
     expect(toJson(navigation)).toMatchSnapshot();
