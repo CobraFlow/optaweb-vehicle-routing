@@ -25,11 +25,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+
 /**
  * Persistable location.
  */
 @Entity
-class LocationEntity {
+@FilterDef(name = "locationFilter", parameters = { @ParamDef(name = "tenantId", type = "int") })
+@Filter(name = "locationFilter", condition = "tenant_id = :tenantId")
+class LocationEntity extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

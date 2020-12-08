@@ -21,11 +21,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+
 /**
  * Persistable vehicle.
  */
 @Entity
-public class VehicleEntity {
+@FilterDef(name = "vehicleFilter", parameters = { @ParamDef(name = "tenantId", type = "int") })
+@Filter(name = "vehicleFilter", condition = "tenant_id = :tenantId")
+public class VehicleEntity extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -18,6 +18,7 @@ package org.optaweb.vehiclerouting.plugin.websocket;
 
 import org.optaweb.vehiclerouting.domain.Coordinates;
 import org.optaweb.vehiclerouting.domain.RoutingPlan;
+import org.optaweb.vehiclerouting.domain.TenantData;
 import org.optaweb.vehiclerouting.service.demo.DemoService;
 import org.optaweb.vehiclerouting.service.error.ErrorEvent;
 import org.optaweb.vehiclerouting.service.location.LocationService;
@@ -25,6 +26,7 @@ import org.optaweb.vehiclerouting.service.location.RouteOptimizer;
 import org.optaweb.vehiclerouting.service.region.BoundingBox;
 import org.optaweb.vehiclerouting.service.region.RegionService;
 import org.optaweb.vehiclerouting.service.route.RouteListener;
+import org.optaweb.vehiclerouting.service.tenant.TenantService;
 import org.optaweb.vehiclerouting.service.vehicle.VehicleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,14 +57,10 @@ class WebSocketController {
     private final RegionService regionService;
     private final LocationService locationService;
     private final VehicleService vehicleService;
+    private final TenantService tenantService;
     private final DemoService demoService;
     private final ApplicationEventPublisher eventPublisher;
     private final RouteOptimizer optimizer;
-
-    /*
-     * @Autowired
-     * private RoutingPlanConsumer planConsumer;
-     */
 
     @Autowired
     WebSocketController(
@@ -70,6 +68,7 @@ class WebSocketController {
             RegionService regionService,
             LocationService locationService,
             VehicleService vehicleService,
+            TenantService tenantService,
             DemoService demoService,
             ApplicationEventPublisher eventPublisher,
             RouteOptimizer optimizer) {
@@ -77,6 +76,7 @@ class WebSocketController {
         this.regionService = regionService;
         this.locationService = locationService;
         this.vehicleService = vehicleService;
+        this.tenantService = tenantService;
         this.demoService = demoService;
         this.eventPublisher = eventPublisher;
         this.optimizer = optimizer;
@@ -119,6 +119,42 @@ class WebSocketController {
     }
 
     /**
+     * Create new tenant.
+     *
+     * @param request new tenant description
+     */
+    @MessageMapping("/tenant")
+    void addTenant(PortableTenant request) {
+        tenantService.createTenant(new TenantData(
+                request.getName(),
+                request.getDescription()));
+    }
+
+    /**
+     * Delete tenant.
+     *
+     * @param id ID of the tenant to be deleted
+     */
+    @MessageMapping("/tenant/{id}/delete")
+    void removeTenant(@DestinationVariable int id) {
+        tenantService.removeTenant(id);
+    }
+
+    /**
+     * Update tenant.
+     *
+     * @param id      ID of the tenant to be updated
+     * @param request updated tenant
+     */
+    @MessageMapping("/tenant/{id}")
+    void updateTenant(@DestinationVariable int id, PortableTenant request) {
+        tenantService.updateTenant(
+                id,
+                request.getName(),
+                request.getDescription());
+    }
+
+    /**
      * Create new location.
      *
      * @param request new location description
@@ -150,7 +186,6 @@ class WebSocketController {
     void updateLocation(@DestinationVariable long id, PortableLocation request) {
         locationService.updateLocation(id, request.getDescription());
         optimizer.nopChange();
-        //        planConsumer.consumePlan(routeListener.getBestRoutingPlan());
     }
 
     /**

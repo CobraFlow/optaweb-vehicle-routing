@@ -21,11 +21,17 @@ import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+
 /**
  * Distance between two locations that can be persisted.
  */
 @Entity
-class DistanceEntity {
+@FilterDef(name = "distanceFilter", parameters = { @ParamDef(name = "tenantId", type = "int") })
+@Filter(name = "distanceFilter", condition = "tenant_id = :tenantId")
+class DistanceEntity extends Base {
 
     @EmbeddedId
     private DistanceKey key;
