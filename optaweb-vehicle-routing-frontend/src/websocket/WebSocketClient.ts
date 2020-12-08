@@ -30,7 +30,23 @@ export default class WebSocketClient {
     this.stompClient = null;
   }
 
+  static getCookie(name: string) {
+    let cookieValue = '';
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i += 1) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (`${name}=`)) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
   connect(successCallback: () => any, errorCallback: (err: CloseEvent | Frame) => any) {
+    const csrf = WebSocketClient.getCookie('XSRF-TOKEN');
     const webSocket = new SockJS(this.socketUrl);
     this.stompClient = over(webSocket, {
       debug: true,
@@ -43,7 +59,9 @@ export default class WebSocketClient {
       protocols: ['v12.stomp'],
     });
     this.stompClient.connect(
-      {}, // no headers
+      {
+        'X-XSRF-TOKEN': csrf,
+      },
       successCallback,
       errorCallback,
     );

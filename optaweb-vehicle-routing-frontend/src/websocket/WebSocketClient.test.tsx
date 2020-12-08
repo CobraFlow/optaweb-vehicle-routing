@@ -61,7 +61,7 @@ describe('WebSocketClient', () => {
     expect(over).toHaveBeenCalled();
 
     expect(mockClient.connect).toHaveBeenCalledTimes(1);
-    expect(mockClient.connect.mock.calls[0][0]).toEqual({});
+    expect(mockClient.connect.mock.calls[0][0]).toEqual({ 'X-XSRF-TOKEN': '' });
     expect(mockClient.connect.mock.calls[0][1]).toEqual(onSuccess);
     expect(mockClient.connect.mock.calls[0][2]).toEqual(onError);
   });

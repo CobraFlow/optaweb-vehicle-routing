@@ -16,7 +16,7 @@ public class SecurityController {
         if (ctx != null) {
             request.logout();
         }
-        return "redirect:/overview";
+        return "redirect:/";
     }
 
     /**
