@@ -174,7 +174,8 @@ class SolverManager implements SolverEventListener<VehicleRoutingSolution> {
     }
 
     void nopChange() {
-        assertSolverIsAlive();
+        // Don't want/need to check that the solver is alive.
+        //        assertSolverIsAlive();
         solver.addProblemFactChange(new NopChange());
     }
 
