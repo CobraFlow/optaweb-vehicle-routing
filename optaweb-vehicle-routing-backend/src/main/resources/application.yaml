@@ -53,6 +53,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: h2
+    show-sql: true
 
 server:
   # H2

@@ -20,9 +20,11 @@ import org.optaweb.vehiclerouting.plugin.planner.Constants;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableAsync
+@EnableTransactionManagement(order = 1)
 public class OptaWebVehicleRoutingApplication {
 
     public static void main(String[] args) {

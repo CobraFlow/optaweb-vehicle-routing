@@ -16,15 +16,22 @@
 
 package org.optaweb.vehiclerouting.plugin.websocket;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.optaweb.vehiclerouting.domain.Coordinates;
 import org.optaweb.vehiclerouting.domain.RoutingPlan;
 import org.optaweb.vehiclerouting.domain.TenantData;
+import org.optaweb.vehiclerouting.plugin.security.aop.InboundRequest;
 import org.optaweb.vehiclerouting.service.demo.DemoService;
 import org.optaweb.vehiclerouting.service.error.ErrorEvent;
 import org.optaweb.vehiclerouting.service.location.LocationService;
 import org.optaweb.vehiclerouting.service.location.RouteOptimizer;
 import org.optaweb.vehiclerouting.service.region.BoundingBox;
 import org.optaweb.vehiclerouting.service.region.RegionService;
+import org.optaweb.vehiclerouting.service.reload.ReloadEvent;
 import org.optaweb.vehiclerouting.service.route.RouteListener;
 import org.optaweb.vehiclerouting.service.tenant.TenantService;
 import org.optaweb.vehiclerouting.service.vehicle.VehicleService;
@@ -37,11 +44,7 @@ import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Handles WebSocket subscriptions and STOMP messages.
@@ -49,6 +52,7 @@ import static java.util.stream.Collectors.toList;
  * @see WebSocketConfig
  */
 @Controller
+@Transactional
 class WebSocketController {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
@@ -94,7 +98,8 @@ class WebSocketController {
      * @return server info
      */
     @SubscribeMapping("/serverInfo")
-    ServerInfo subscribeToServerInfoTopic() {
+    @InboundRequest
+    public ServerInfo subscribeToServerInfoTopic() {
         BoundingBox boundingBox = regionService.boundingBox();
         List<PortableCoordinates> portableBoundingBox = Arrays.asList(
                 PortableCoordinates.fromCoordinates(boundingBox.getSouthWest()),
@@ -104,6 +109,7 @@ class WebSocketController {
                         routingProblem.name(),
                         routingProblem.visits().size()))
                 .collect(toList());
+        eventPublisher.publishEvent(new ReloadEvent(this));
         return new ServerInfo(portableBoundingBox, regionService.countryCodes(), demos);
     }
 
@@ -113,7 +119,8 @@ class WebSocketController {
      * @return route message
      */
     @SubscribeMapping("/route")
-    PortableRoutingPlan subscribeToRouteTopic() {
+    @InboundRequest
+    public PortableRoutingPlan subscribeToRouteTopic() {
         RoutingPlan routingPlan = routeListener.getBestRoutingPlan();
         return PortableRoutingPlanFactory.fromRoutingPlan(routingPlan);
     }
@@ -124,7 +131,8 @@ class WebSocketController {
      * @param request new tenant description
      */
     @MessageMapping("/tenant")
-    void addTenant(PortableTenant request) {
+    @InboundRequest
+    public void addTenant(PortableTenant request) {
         tenantService.createTenant(new TenantData(
                 request.getName(),
                 request.getDescription()));
@@ -136,18 +144,20 @@ class WebSocketController {
      * @param id ID of the tenant to be deleted
      */
     @MessageMapping("/tenant/{id}/delete")
-    void removeTenant(@DestinationVariable int id) {
+    @InboundRequest
+    public void removeTenant(@DestinationVariable int id) {
         tenantService.removeTenant(id);
     }
 
     /**
      * Update tenant.
      *
-     * @param id      ID of the tenant to be updated
+     * @param id ID of the tenant to be updated
      * @param request updated tenant
      */
     @MessageMapping("/tenant/{id}")
-    void updateTenant(@DestinationVariable int id, PortableTenant request) {
+    @InboundRequest
+    public void updateTenant(@DestinationVariable int id, PortableTenant request) {
         tenantService.updateTenant(
                 id,
                 request.getName(),
@@ -160,7 +170,8 @@ class WebSocketController {
      * @param request new location description
      */
     @MessageMapping("/location")
-    void addLocation(PortableLocation request) {
+    @InboundRequest
+    public void addLocation(PortableLocation request) {
         locationService.createLocation(
                 new Coordinates(request.getLatitude(), request.getLongitude()),
                 request.getDescription());
@@ -172,18 +183,20 @@ class WebSocketController {
      * @param id ID of the location to be deleted
      */
     @MessageMapping("/location/{id}/delete")
-    void removeLocation(@DestinationVariable long id) {
+    @InboundRequest
+    public void removeLocation(@DestinationVariable long id) {
         locationService.removeLocation(id);
     }
 
     /**
      * Update location.
      *
-     * @param id      ID of the location to be updated
+     * @param id ID of the location to be updated
      * @param request updated location
      */
     @MessageMapping("/location/{id}")
-    void updateLocation(@DestinationVariable long id, PortableLocation request) {
+    @InboundRequest
+    public void updateLocation(@DestinationVariable long id, PortableLocation request) {
         locationService.updateLocation(id, request.getDescription());
         optimizer.nopChange();
     }
@@ -194,19 +207,22 @@ class WebSocketController {
      * @param name data set name
      */
     @MessageMapping("/demo/{name}")
-    void demo(@DestinationVariable String name) {
+    @InboundRequest
+    public void demo(@DestinationVariable String name) {
         demoService.loadDemo(name);
     }
 
     @MessageMapping("/clear")
-    void clear() {
+    @InboundRequest
+    public void clear() {
         // TODO do this in one step (=> new RoutingPlanService)
         locationService.removeAll();
         vehicleService.removeAll();
     }
 
     @MessageMapping("/vehicle")
-    void addVehicle() {
+    @InboundRequest
+    public void addVehicle() {
         vehicleService.createVehicle();
     }
 
@@ -216,29 +232,33 @@ class WebSocketController {
      * @param id ID of the vehicle to be deleted
      */
     @MessageMapping("/vehicle/{id}/delete")
-    void removeVehicle(@DestinationVariable long id) {
+    @InboundRequest
+    public void removeVehicle(@DestinationVariable long id) {
         vehicleService.removeVehicle(id);
     }
 
     /**
      * Update vehicle.
      *
-     * @param id      ID of the location to be updated
+     * @param id ID of the location to be updated
      * @param request updated location
      */
     @MessageMapping("/vehicle/{id}")
-    void updateVehicle(@DestinationVariable long id, PortableVehicle request) {
+    @InboundRequest
+    public void updateVehicle(@DestinationVariable long id, PortableVehicle request) {
         vehicleService.updateVehicle(id, request.getName());
         optimizer.nopChange();
     }
 
     @MessageMapping("/vehicle/deleteAny")
-    void removeAnyVehicle() {
+    @InboundRequest
+    public void removeAnyVehicle() {
         vehicleService.removeAnyVehicle();
     }
 
     @MessageMapping("/vehicle/{id}/capacity")
-    void changeCapacity(@DestinationVariable long id, int capacity) {
+    @InboundRequest
+    public void changeCapacity(@DestinationVariable long id, int capacity) {
         vehicleService.changeCapacity(id, capacity);
     }
 }

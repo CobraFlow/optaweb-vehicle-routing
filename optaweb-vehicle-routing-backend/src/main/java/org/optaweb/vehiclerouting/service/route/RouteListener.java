@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Handles route updates emitted by optimization plugin.
@@ -71,6 +72,7 @@ public class RouteListener implements ApplicationListener<RouteChangedEvent> {
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(RouteChangedEvent event) {
         // TODO persist the best solution
         Location depot = event.depotId().flatMap(locationRepository::find).orElse(null);

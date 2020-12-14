@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Reloads data from repositories when the application starts.
@@ -48,8 +49,12 @@ public class ReloadService {
         this.locationService = locationService;
     }
 
-    @EventListener
-    public synchronized void reload(ApplicationStartedEvent event) {
+    @EventListener(classes = {
+            ApplicationStartedEvent.class,
+            ReloadEvent.class
+    })
+    @Transactional
+    public synchronized void reload() {
         vehicleRepository.vehicles().forEach(vehicleService::addVehicle);
         locationRepository.locations().forEach(locationService::addLocation);
     }

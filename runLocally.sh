@@ -110,7 +110,7 @@ function run_optaweb() {
   fi
   java \
     "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" \
-    "-Dspring.profiles.active=local,keycloak,debugZ" \
+    "-Dspring.profiles.active=local,prod,keycloak,debugZ" \
     -jar "$jar" "${args[@]}"
 }
 
