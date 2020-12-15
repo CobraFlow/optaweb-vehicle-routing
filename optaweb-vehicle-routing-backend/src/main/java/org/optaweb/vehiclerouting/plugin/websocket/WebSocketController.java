@@ -28,7 +28,6 @@ import org.optaweb.vehiclerouting.plugin.security.aop.InboundRequest;
 import org.optaweb.vehiclerouting.service.demo.DemoService;
 import org.optaweb.vehiclerouting.service.error.ErrorEvent;
 import org.optaweb.vehiclerouting.service.location.LocationService;
-import org.optaweb.vehiclerouting.service.location.RouteOptimizer;
 import org.optaweb.vehiclerouting.service.region.BoundingBox;
 import org.optaweb.vehiclerouting.service.region.RegionService;
 import org.optaweb.vehiclerouting.service.reload.ReloadEvent;
@@ -42,6 +41,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,7 +64,6 @@ class WebSocketController {
     private final TenantService tenantService;
     private final DemoService demoService;
     private final ApplicationEventPublisher eventPublisher;
-    private final RouteOptimizer optimizer;
 
     @Autowired
     WebSocketController(
@@ -74,8 +73,7 @@ class WebSocketController {
             VehicleService vehicleService,
             TenantService tenantService,
             DemoService demoService,
-            ApplicationEventPublisher eventPublisher,
-            RouteOptimizer optimizer) {
+            ApplicationEventPublisher eventPublisher) {
         this.routeListener = routeListener;
         this.regionService = regionService;
         this.locationService = locationService;
@@ -83,10 +81,10 @@ class WebSocketController {
         this.tenantService = tenantService;
         this.demoService = demoService;
         this.eventPublisher = eventPublisher;
-        this.optimizer = optimizer;
     }
 
     @MessageExceptionHandler
+    @SendToUser("/topic/error")
     void handleException(Exception exception) {
         logger.error("Uncaught exception", exception);
         eventPublisher.publishEvent(new ErrorEvent(this, exception.toString()));
@@ -98,6 +96,7 @@ class WebSocketController {
      * @return server info
      */
     @SubscribeMapping("/serverInfo")
+    @SendToUser("/topic/serverInfo")
     @InboundRequest
     public ServerInfo subscribeToServerInfoTopic() {
         BoundingBox boundingBox = regionService.boundingBox();
@@ -170,6 +169,7 @@ class WebSocketController {
      * @param request new location description
      */
     @MessageMapping("/location")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void addLocation(PortableLocation request) {
         locationService.createLocation(
@@ -183,6 +183,7 @@ class WebSocketController {
      * @param id ID of the location to be deleted
      */
     @MessageMapping("/location/{id}/delete")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void removeLocation(@DestinationVariable long id) {
         locationService.removeLocation(id);
@@ -195,10 +196,10 @@ class WebSocketController {
      * @param request updated location
      */
     @MessageMapping("/location/{id}")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void updateLocation(@DestinationVariable long id, PortableLocation request) {
         locationService.updateLocation(id, request.getDescription());
-        optimizer.nopChange();
     }
 
     /**
@@ -207,12 +208,14 @@ class WebSocketController {
      * @param name data set name
      */
     @MessageMapping("/demo/{name}")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void demo(@DestinationVariable String name) {
         demoService.loadDemo(name);
     }
 
     @MessageMapping("/clear")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void clear() {
         // TODO do this in one step (=> new RoutingPlanService)
@@ -221,6 +224,7 @@ class WebSocketController {
     }
 
     @MessageMapping("/vehicle")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void addVehicle() {
         vehicleService.createVehicle();
@@ -232,6 +236,7 @@ class WebSocketController {
      * @param id ID of the vehicle to be deleted
      */
     @MessageMapping("/vehicle/{id}/delete")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void removeVehicle(@DestinationVariable long id) {
         vehicleService.removeVehicle(id);
@@ -244,19 +249,21 @@ class WebSocketController {
      * @param request updated location
      */
     @MessageMapping("/vehicle/{id}")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void updateVehicle(@DestinationVariable long id, PortableVehicle request) {
         vehicleService.updateVehicle(id, request.getName());
-        optimizer.nopChange();
     }
 
     @MessageMapping("/vehicle/deleteAny")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void removeAnyVehicle() {
         vehicleService.removeAnyVehicle();
     }
 
     @MessageMapping("/vehicle/{id}/capacity")
+    @SendToUser("/topic/route")
     @InboundRequest
     public void changeCapacity(@DestinationVariable long id, int capacity) {
         vehicleService.changeCapacity(id, capacity);

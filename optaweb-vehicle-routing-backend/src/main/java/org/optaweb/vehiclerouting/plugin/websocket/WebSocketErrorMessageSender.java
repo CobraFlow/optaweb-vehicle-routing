@@ -16,10 +16,13 @@
 
 package org.optaweb.vehiclerouting.plugin.websocket;
 
+import java.security.Principal;
+
 import org.optaweb.vehiclerouting.service.error.ErrorMessage;
 import org.optaweb.vehiclerouting.service.error.ErrorMessageConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -39,6 +42,7 @@ class WebSocketErrorMessageSender implements ErrorMessageConsumer {
 
     @Override
     public void consumeMessage(ErrorMessage message) {
-        webSocket.convertAndSend(TOPIC_ERROR, PortableErrorMessage.fromMessage(message));
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        webSocket.convertAndSendToUser(principal.getName(), TOPIC_ERROR, PortableErrorMessage.fromMessage(message));
     }
 }

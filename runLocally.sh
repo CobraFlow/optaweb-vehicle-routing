@@ -89,6 +89,8 @@ function validate() {
 }
 
 function run_optaweb() {
+  export REACT_APP_BACKEND_URL=http://UbuntU/vrp
+
   declare -a args
   args+=("--app.demo.data-set-dir=$dataset_dir")
   args+=("--app.persistence.h2-dir=$vrp_dir/db")
@@ -111,6 +113,7 @@ function run_optaweb() {
   java \
     "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" \
     "-Dspring.profiles.active=local,prod,keycloak,debugZ" \
+    "-Dkeycloak.auth-server-url=http://ubuntu/auth" \
     -jar "$jar" "${args[@]}"
 }
 

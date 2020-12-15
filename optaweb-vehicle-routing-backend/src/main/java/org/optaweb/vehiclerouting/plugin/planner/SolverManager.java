@@ -32,6 +32,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.task.AsyncListenableTaskExecutor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 
@@ -48,16 +50,16 @@ import org.springframework.util.concurrent.ListenableFuture;
  * <li>Listens for best solution changes and publishes new best solutions via {@link RouteChangedEventPublisher}.</li>
  * </ul>
  */
+
 @Component("optaweb-solver-manager")
+//@Scope(scopeName = "websocket", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class SolverManager implements SolverEventListener<VehicleRoutingSolution> {
 
     private static final Logger logger = LoggerFactory.getLogger(SolverManager.class);
-
-    private final Solver<VehicleRoutingSolution> solver;
     private final AsyncListenableTaskExecutor executor;
     private final RouteChangedEventPublisher routeChangedEventPublisher;
     private final ApplicationEventPublisher eventPublisher;
-
+    private final Solver<VehicleRoutingSolution> solver;
     private ListenableFuture<VehicleRoutingSolution> solverFuture;
 
     @Autowired
@@ -92,7 +94,11 @@ class SolverManager implements SolverEventListener<VehicleRoutingSolution> {
         if (solverFuture != null) {
             throw new IllegalStateException("Solver start has already been requested");
         }
-        solverFuture = executor.submitListenable((SolvingTask) () -> solver.solve(solution));
+        Authentication p = SecurityContextHolder.getContext().getAuthentication();
+        solverFuture = executor.submitListenable((SolvingTask) () -> {
+            SecurityContextHolder.getContext().setAuthentication(p);
+            return solver.solve(solution);
+        });
         solverFuture.addCallback(
                 // IMPORTANT: This is happening on the solver thread.
                 // TODO in both cases restart or somehow recover?

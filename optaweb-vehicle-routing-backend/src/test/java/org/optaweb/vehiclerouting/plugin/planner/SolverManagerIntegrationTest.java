@@ -26,14 +26,7 @@ import java.util.concurrent.Semaphore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.optaweb.vehiclerouting.Profiles;
-import org.optaweb.vehiclerouting.plugin.planner.domain.DistanceMap;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningDepot;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningLocation;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningLocationFactory;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVehicle;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVehicleFactory;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVisitFactory;
-import org.optaweb.vehiclerouting.plugin.planner.domain.VehicleRoutingSolution;
+import org.optaweb.vehiclerouting.plugin.planner.domain.*;
 import org.optaweb.vehiclerouting.service.route.RouteChangedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +42,7 @@ import org.springframework.test.context.ActiveProfiles;
                 "optaplanner.solver-config-xml=" + SOLVER_CONFIG,
                 "optaplanner.solver.termination.best-score-limit=-1hard/-120soft"
         },
-        webEnvironment = SpringBootTest.WebEnvironment.NONE)
+        webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles(Profiles.TEST)
 class SolverManagerIntegrationTest {
 

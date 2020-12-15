@@ -129,7 +129,7 @@ export default class WebSocketClient {
 
   subscribeToServerInfo(subscriptionCallback: (serverInfo: ServerInfo) => any): void {
     if (this.stompClient) {
-      this.stompClient.subscribe('/topic/serverInfo', (message) => {
+      this.stompClient.subscribe('/user/topic/serverInfo', (message) => {
         const serverInfo = JSON.parse(message.body);
         subscriptionCallback(serverInfo);
       });
@@ -138,7 +138,7 @@ export default class WebSocketClient {
 
   subscribeToRoute(subscriptionCallback: (plan: RoutingPlan) => any): void {
     if (this.stompClient) {
-      this.stompClient.subscribe('/topic/route', (message) => {
+      this.stompClient.subscribe('/user/topic/route', (message) => {
         const plan = JSON.parse(message.body);
         subscriptionCallback(plan);
       });
@@ -147,7 +147,7 @@ export default class WebSocketClient {
 
   subscribeToErrorTopic(subscriptionCallback: (errorMessage: MessagePayload) => any): void {
     if (this.stompClient) {
-      this.stompClient.subscribe('/topic/error', (message) => {
+      this.stompClient.subscribe('/user/topic/error', (message) => {
         subscriptionCallback(JSON.parse(message.body));
       });
     }

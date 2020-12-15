@@ -37,6 +37,7 @@ class RouteOptimizerConfig {
     }
 
     @Bean
+    //@Scope(scopeName = "websocket", proxyMode = ScopedProxyMode.TARGET_CLASS)
     Solver<VehicleRoutingSolution> solver() {
         return solverFactory.buildSolver();
     }

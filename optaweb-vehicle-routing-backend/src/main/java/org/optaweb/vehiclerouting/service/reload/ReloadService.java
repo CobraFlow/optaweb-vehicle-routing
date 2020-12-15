@@ -21,7 +21,6 @@ import org.optaweb.vehiclerouting.service.location.LocationService;
 import org.optaweb.vehiclerouting.service.vehicle.VehicleRepository;
 import org.optaweb.vehiclerouting.service.vehicle.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,9 +49,10 @@ public class ReloadService {
     }
 
     @EventListener(classes = {
-            ApplicationStartedEvent.class,
+            //            ApplicationStartedEvent.class,
             ReloadEvent.class
     })
+
     @Transactional
     public synchronized void reload() {
         vehicleRepository.vehicles().forEach(vehicleService::addVehicle);

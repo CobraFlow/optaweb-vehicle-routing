@@ -21,14 +21,7 @@ import java.util.List;
 
 import org.optaweb.vehiclerouting.domain.Location;
 import org.optaweb.vehiclerouting.domain.Vehicle;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningDepot;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningLocation;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningLocationFactory;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVehicle;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVehicleFactory;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVisit;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVisitFactory;
-import org.optaweb.vehiclerouting.plugin.planner.domain.SolutionFactory;
+import org.optaweb.vehiclerouting.plugin.planner.domain.*;
 import org.optaweb.vehiclerouting.service.location.DistanceMatrixRow;
 import org.optaweb.vehiclerouting.service.location.RouteOptimizer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +33,7 @@ import org.springframework.stereotype.Component;
  * Stops solver when vehicles or visits are reduced to zero.
  */
 @Component
+//@Scope(scopeName = "websocket", proxyMode = ScopedProxyMode.TARGET_CLASS)
 class RouteOptimizerImpl implements RouteOptimizer {
 
     private final SolverManager solverManager;

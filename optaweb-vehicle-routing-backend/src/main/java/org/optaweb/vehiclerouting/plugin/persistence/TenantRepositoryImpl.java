@@ -11,8 +11,10 @@ import org.optaweb.vehiclerouting.service.tenant.TenantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 public class TenantRepositoryImpl implements TenantRepository {
     private static final Logger logger = LoggerFactory.getLogger(TenantRepositoryImpl.class);
     private final TenantCrudRepository repository;
