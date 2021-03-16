@@ -44,8 +44,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 
     @Override
     public Vehicle createVehicle(int capacity) {
-        long id = repository.save(new VehicleEntity(0, null, capacity)).getId();
-        VehicleEntity vehicleEntity = repository.save(new VehicleEntity(id, "Vehicle " + id, capacity));
+        VehicleEntity vehicleEntity = repository.save(new VehicleEntity(0, "New Vehicle", capacity));
         Vehicle vehicle = toDomain(vehicleEntity);
         logger.info("Created vehicle {}.", vehicle);
         return vehicle;

@@ -110,9 +110,11 @@ function run_optaweb() {
   else
     [[ ${cc_list} != "??" ]] && args+=("--app.region.country-codes=$cc_list")
   fi
+  which java
+  java --version
   java \
-    "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" \
-    "-Dspring.profiles.active=local,prod,keycloak,debugZ" \
+    "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005" \
+    "-Dspring.profiles.active=local,prod,keycloak,debug" \
     "-Dkeycloak.auth-server-url=http://ubuntu/auth" \
     -jar "$jar" "${args[@]}"
 }

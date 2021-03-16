@@ -24,6 +24,7 @@ import javax.persistence.Id;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
+import org.optaweb.vehiclerouting.plugin.security.aop.TenantContext;
 
 /**
  * Persistable vehicle.
@@ -41,9 +42,11 @@ public class VehicleEntity extends Base {
 
     protected VehicleEntity() {
         // for JPA
+        super(null);
     }
 
     public VehicleEntity(long id, String name, int capacity) {
+        super(TenantContext.getCurrentTenant());
         this.id = id;
         this.name = name;
         this.capacity = capacity;

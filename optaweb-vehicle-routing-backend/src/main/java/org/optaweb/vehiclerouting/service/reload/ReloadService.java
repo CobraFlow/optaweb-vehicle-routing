@@ -55,7 +55,7 @@ public class ReloadService {
 
     @Transactional
     public synchronized void reload() {
-        vehicleRepository.vehicles().forEach(vehicleService::addVehicle);
         locationRepository.locations().forEach(locationService::addLocation);
+        vehicleRepository.vehicles().forEach(vehicleService::addVehicle);
     }
 }

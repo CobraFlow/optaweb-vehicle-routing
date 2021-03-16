@@ -41,7 +41,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +56,7 @@ class WebSocketController {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
 
+    private final WebSocketRoutingPlanSender webSocketRoutingPlanSender;
     private final RouteListener routeListener;
     private final RegionService regionService;
     private final LocationService locationService;
@@ -67,6 +67,7 @@ class WebSocketController {
 
     @Autowired
     WebSocketController(
+            WebSocketRoutingPlanSender webSocketRoutingPlanSender,
             RouteListener routeListener,
             RegionService regionService,
             LocationService locationService,
@@ -74,6 +75,7 @@ class WebSocketController {
             TenantService tenantService,
             DemoService demoService,
             ApplicationEventPublisher eventPublisher) {
+        this.webSocketRoutingPlanSender = webSocketRoutingPlanSender;
         this.routeListener = routeListener;
         this.regionService = regionService;
         this.locationService = locationService;
@@ -84,7 +86,6 @@ class WebSocketController {
     }
 
     @MessageExceptionHandler
-    @SendToUser("/topic/error")
     void handleException(Exception exception) {
         logger.error("Uncaught exception", exception);
         eventPublisher.publishEvent(new ErrorEvent(this, exception.toString()));
@@ -96,9 +97,9 @@ class WebSocketController {
      * @return server info
      */
     @SubscribeMapping("/serverInfo")
-    @SendToUser("/topic/serverInfo")
     @InboundRequest
     public ServerInfo subscribeToServerInfoTopic() {
+        System.out.println("subscribeToServerInfoTopic() CALLED!");
         BoundingBox boundingBox = regionService.boundingBox();
         List<PortableCoordinates> portableBoundingBox = Arrays.asList(
                 PortableCoordinates.fromCoordinates(boundingBox.getSouthWest()),
@@ -108,7 +109,6 @@ class WebSocketController {
                         routingProblem.name(),
                         routingProblem.visits().size()))
                 .collect(toList());
-        eventPublisher.publishEvent(new ReloadEvent(this));
         return new ServerInfo(portableBoundingBox, regionService.countryCodes(), demos);
     }
 
@@ -120,6 +120,7 @@ class WebSocketController {
     @SubscribeMapping("/route")
     @InboundRequest
     public PortableRoutingPlan subscribeToRouteTopic() {
+        eventPublisher.publishEvent(new ReloadEvent(this));
         RoutingPlan routingPlan = routeListener.getBestRoutingPlan();
         return PortableRoutingPlanFactory.fromRoutingPlan(routingPlan);
     }
@@ -169,7 +170,6 @@ class WebSocketController {
      * @param request new location description
      */
     @MessageMapping("/location")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void addLocation(PortableLocation request) {
         locationService.createLocation(
@@ -183,7 +183,6 @@ class WebSocketController {
      * @param id ID of the location to be deleted
      */
     @MessageMapping("/location/{id}/delete")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void removeLocation(@DestinationVariable long id) {
         locationService.removeLocation(id);
@@ -196,7 +195,6 @@ class WebSocketController {
      * @param request updated location
      */
     @MessageMapping("/location/{id}")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void updateLocation(@DestinationVariable long id, PortableLocation request) {
         locationService.updateLocation(id, request.getDescription());
@@ -208,14 +206,12 @@ class WebSocketController {
      * @param name data set name
      */
     @MessageMapping("/demo/{name}")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void demo(@DestinationVariable String name) {
         demoService.loadDemo(name);
     }
 
     @MessageMapping("/clear")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void clear() {
         // TODO do this in one step (=> new RoutingPlanService)
@@ -224,7 +220,6 @@ class WebSocketController {
     }
 
     @MessageMapping("/vehicle")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void addVehicle() {
         vehicleService.createVehicle();
@@ -236,7 +231,6 @@ class WebSocketController {
      * @param id ID of the vehicle to be deleted
      */
     @MessageMapping("/vehicle/{id}/delete")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void removeVehicle(@DestinationVariable long id) {
         vehicleService.removeVehicle(id);
@@ -249,21 +243,18 @@ class WebSocketController {
      * @param request updated location
      */
     @MessageMapping("/vehicle/{id}")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void updateVehicle(@DestinationVariable long id, PortableVehicle request) {
         vehicleService.updateVehicle(id, request.getName());
     }
 
     @MessageMapping("/vehicle/deleteAny")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void removeAnyVehicle() {
         vehicleService.removeAnyVehicle();
     }
 
     @MessageMapping("/vehicle/{id}/capacity")
-    @SendToUser("/topic/route")
     @InboundRequest
     public void changeCapacity(@DestinationVariable long id, int capacity) {
         vehicleService.changeCapacity(id, capacity);

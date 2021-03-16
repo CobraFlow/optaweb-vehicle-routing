@@ -16,6 +16,8 @@
 
 package org.optaweb.vehiclerouting.plugin.planner;
 
+import static org.optaweb.vehiclerouting.service.lifecycle.AbstractProblemIdProvider.getProblemId;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,11 @@ import org.optaweb.vehiclerouting.domain.Vehicle;
 import org.optaweb.vehiclerouting.plugin.planner.domain.*;
 import org.optaweb.vehiclerouting.service.location.DistanceMatrixRow;
 import org.optaweb.vehiclerouting.service.location.RouteOptimizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,10 +39,11 @@ import org.springframework.stereotype.Component;
  * Stops solver when vehicles or visits are reduced to zero.
  */
 @Component
-//@Scope(scopeName = "websocket", proxyMode = ScopedProxyMode.TARGET_CLASS)
-class RouteOptimizerImpl implements RouteOptimizer {
+@Scope(scopeName = "websocket", proxyMode = ScopedProxyMode.INTERFACES)
+class RLHRouteOptimizer implements RouteOptimizer {
+    private static final Logger logger = LoggerFactory.getLogger(RLHRouteOptimizer.class);
 
-    private final SolverManager solverManager;
+    private final RLHSolverControl solverControl;
     private final RouteChangedEventPublisher routeChangedEventPublisher;
 
     private final List<PlanningVehicle> vehicles = new ArrayList<>();
@@ -44,9 +51,11 @@ class RouteOptimizerImpl implements RouteOptimizer {
     private PlanningDepot depot;
 
     @Autowired
-    RouteOptimizerImpl(SolverManager solverManager, RouteChangedEventPublisher routeChangedEventPublisher) {
-        this.solverManager = solverManager;
+    RLHRouteOptimizer(RLHSolverControl solverControl,
+            RouteChangedEventPublisher routeChangedEventPublisher) {
+        this.solverControl = solverControl;
         this.routeChangedEventPublisher = routeChangedEventPublisher;
+        logger.info("Created new RLHRouteOptimizer");
     }
 
     @Override
@@ -59,14 +68,15 @@ class RouteOptimizerImpl implements RouteOptimizer {
             depot = new PlanningDepot(location);
             publishSolution();
         } else {
+            String problemId = getProblemId();
             PlanningVisit visit = PlanningVisitFactory.fromLocation(location);
             visits.add(visit);
             if (vehicles.isEmpty()) {
                 publishSolution();
             } else if (visits.size() == 1) {
-                solverManager.startSolver(SolutionFactory.solutionFromVisits(vehicles, depot, visits));
+                solverControl.startSolver(problemId, SolutionFactory.solutionFromVisits(vehicles, depot, visits));
             } else {
-                solverManager.addVisit(visit);
+                solverControl.addVisit(problemId, visit);
             }
         }
     }
@@ -84,6 +94,7 @@ class RouteOptimizerImpl implements RouteOptimizer {
             depot = null;
             publishSolution();
         } else {
+            String problemId = getProblemId();
             if (depot.getId() == domainLocation.id()) {
                 throw new IllegalStateException("You can only remove depot if there are no visits");
             }
@@ -93,11 +104,11 @@ class RouteOptimizerImpl implements RouteOptimizer {
             if (vehicles.isEmpty()) { // solver is not running
                 publishSolution();
             } else if (visits.isEmpty()) { // solver is running
-                solverManager.stopSolver();
+                solverControl.stopSolver(problemId);
                 publishSolution();
             } else {
-                // TODO maybe allow removing location by ID (only require the necessary information)
-                solverManager.removeVisit(
+                solverControl.removeVisit(
+                        problemId,
                         PlanningVisitFactory.fromLocation(PlanningLocationFactory.fromDomain(domainLocation)));
             }
         }
@@ -105,15 +116,16 @@ class RouteOptimizerImpl implements RouteOptimizer {
 
     @Override
     public void addVehicle(Vehicle domainVehicle) {
+        String problemId = getProblemId();
         PlanningVehicle vehicle = PlanningVehicleFactory.fromDomain(domainVehicle);
         vehicle.setDepot(depot);
         vehicles.add(vehicle);
         if (visits.isEmpty()) {
             publishSolution();
         } else if (vehicles.size() == 1) {
-            solverManager.startSolver(SolutionFactory.solutionFromVisits(vehicles, depot, visits));
+            solverControl.startSolver(problemId, SolutionFactory.solutionFromVisits(vehicles, depot, visits));
         } else {
-            solverManager.addVehicle(vehicle);
+            solverControl.addVehicle(problemId, vehicle);
         }
     }
 
@@ -122,13 +134,14 @@ class RouteOptimizerImpl implements RouteOptimizer {
         if (!vehicles.removeIf(vehicle -> vehicle.getId() == domainVehicle.id())) {
             throw new IllegalArgumentException("Cannot remove " + domainVehicle + " because it doesn't exist");
         }
+        String problemId = getProblemId();
         if (visits.isEmpty()) { // solver is not running
             publishSolution();
         } else if (vehicles.isEmpty()) { // solver is running
-            solverManager.stopSolver();
+            solverControl.stopSolver(problemId);
             publishSolution();
         } else {
-            solverManager.removeVehicle(PlanningVehicleFactory.fromDomain(domainVehicle));
+            solverControl.removeVehicle(problemId, PlanningVehicleFactory.fromDomain(domainVehicle));
         }
     }
 
@@ -141,7 +154,7 @@ class RouteOptimizerImpl implements RouteOptimizer {
                         "Cannot change capacity of " + domainVehicle + " because it doesn't exist"));
         vehicle.setCapacity(domainVehicle.capacity());
         if (!visits.isEmpty()) {
-            solverManager.changeCapacity(vehicle);
+            solverControl.changeCapacity(getProblemId(), vehicle);
         } else {
             publishSolution();
         }
@@ -149,13 +162,13 @@ class RouteOptimizerImpl implements RouteOptimizer {
 
     @Override
     public void nopChange() {
-        solverManager.nopChange();
+        solverControl.nopChange(getProblemId());
         publishSolution();
     }
 
     @Override
     public void removeAllLocations() {
-        solverManager.stopSolver();
+        solverControl.stopSolver(getProblemId());
         depot = null;
         visits.clear();
         publishSolution();
@@ -163,7 +176,7 @@ class RouteOptimizerImpl implements RouteOptimizer {
 
     @Override
     public void removeAllVehicles() {
-        solverManager.stopSolver();
+        solverControl.stopSolver(getProblemId());
         vehicles.clear();
         publishSolution();
     }

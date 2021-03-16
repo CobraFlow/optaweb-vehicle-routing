@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 class WebSocketRoutingPlanSender implements RoutingPlanConsumer {
 
-    static final String TOPIC_ROUTE = "/topic/route";
+    static String DESTINATION = "/queue/route";
 
     private final SimpMessagingTemplate webSocket;
 
@@ -43,7 +43,8 @@ class WebSocketRoutingPlanSender implements RoutingPlanConsumer {
     @Override
     public void consumePlan(RoutingPlan routingPlan) {
         Principal principal = SecurityContextHolder.getContext().getAuthentication();
-        webSocket.convertAndSendToUser(principal.getName(), TOPIC_ROUTE,
+        String name = principal.getName();
+        webSocket.convertAndSendToUser(name, DESTINATION,
                 PortableRoutingPlanFactory.fromRoutingPlan(routingPlan));
     }
 }

@@ -52,10 +52,8 @@ public class TenantInterceptor {
         try {
             log.debug("Continuing with the execution!");
             return joinPoint.proceed();
-        } catch (Throwable t) {
-            throw t;
         } finally {
-            log.error(" Clearing tenant context!");
+            log.debug(" Clearing tenant context!");
             TenantContext.clear();
         }
     }

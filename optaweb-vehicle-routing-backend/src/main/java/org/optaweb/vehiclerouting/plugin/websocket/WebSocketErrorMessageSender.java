@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 class WebSocketErrorMessageSender implements ErrorMessageConsumer {
 
-    static final String TOPIC_ERROR = "/topic/error";
+    static final String TOPIC_ERROR = "/queue/error";
 
     private final SimpMessagingTemplate webSocket;
 

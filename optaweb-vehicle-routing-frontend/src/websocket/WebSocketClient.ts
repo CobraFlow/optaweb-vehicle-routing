@@ -16,7 +16,7 @@
 
 import SockJS from 'sockjs-client';
 import { MessagePayload } from 'store/message/types';
-import { LatLngWithDescription, RoutingPlan, Location, Vehicle } from 'store/route/types';
+import { LatLngWithDescription, Location, RoutingPlan, Vehicle } from 'store/route/types';
 import { ServerInfo } from 'store/server/types';
 import { Client, Frame, over } from 'webstomp-client';
 
@@ -65,6 +65,13 @@ export default class WebSocketClient {
       successCallback,
       errorCallback,
     );
+  }
+
+  disconnect() {
+    if (this.stompClient) {
+      this.stompClient.disconnect();
+      console.log('Disconnected');
+    }
   }
 
   addLocation(latLng: LatLngWithDescription) {
@@ -129,7 +136,7 @@ export default class WebSocketClient {
 
   subscribeToServerInfo(subscriptionCallback: (serverInfo: ServerInfo) => any): void {
     if (this.stompClient) {
-      this.stompClient.subscribe('/user/topic/serverInfo', (message) => {
+      this.stompClient.subscribe('/user/queue/serverInfo', (message) => {
         const serverInfo = JSON.parse(message.body);
         subscriptionCallback(serverInfo);
       });
@@ -137,8 +144,11 @@ export default class WebSocketClient {
   }
 
   subscribeToRoute(subscriptionCallback: (plan: RoutingPlan) => any): void {
+    console.log('subscribeToRoute()');
     if (this.stompClient) {
-      this.stompClient.subscribe('/user/topic/route', (message) => {
+      console.log('calling subscribeToRoute()');
+      this.stompClient.subscribe('/user/queue/route', (message) => {
+        console.log(`called subscribeToRoute()\n${message.body}`);
         const plan = JSON.parse(message.body);
         subscriptionCallback(plan);
       });
@@ -147,7 +157,7 @@ export default class WebSocketClient {
 
   subscribeToErrorTopic(subscriptionCallback: (errorMessage: MessagePayload) => any): void {
     if (this.stompClient) {
-      this.stompClient.subscribe('/user/topic/error', (message) => {
+      this.stompClient.subscribe('/user/queue/error', (message) => {
         subscriptionCallback(JSON.parse(message.body));
       });
     }

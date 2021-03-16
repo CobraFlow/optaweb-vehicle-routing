@@ -47,7 +47,7 @@ class WebSocketRoutingPlanSenderTest {
         routingPlanSender.consumePlan(RoutingPlan.empty());
         verify(webSocket).convertAndSendToUser(
                 eq("user"),
-                eq(WebSocketRoutingPlanSender.TOPIC_ROUTE),
+                eq(WebSocketRoutingPlanSender.DESTINATION),
                 any(PortableRoutingPlan.class));
     }
 }

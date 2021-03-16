@@ -28,6 +28,7 @@ import javax.persistence.Id;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
+import org.optaweb.vehiclerouting.plugin.security.aop.TenantContext;
 
 /**
  * Persistable location.
@@ -51,9 +52,11 @@ class LocationEntity extends Base {
 
     protected LocationEntity() {
         // for JPA
+        super(null);
     }
 
     LocationEntity(long id, BigDecimal latitude, BigDecimal longitude, String description) {
+        super(TenantContext.getCurrentTenant());
         this.id = id;
         this.latitude = Objects.requireNonNull(latitude);
         this.longitude = Objects.requireNonNull(longitude);
