@@ -148,7 +148,7 @@ describe('WebSocketClient', () => {
     client.connect(onSuccess, onError);
     client.subscribeToServerInfo(callback);
 
-    expect(mockClient.subscribe.mock.calls[0][0]).toBe('/topic/serverInfo');
+    expect(mockClient.subscribe.mock.calls[0][0]).toBe('/user/topic/serverInfo');
     expect(typeof mockClient.subscribe.mock.calls[0][1]).toBe('function');
 
     mockClient.subscribe.mock.calls[0][1]({ body: JSON.stringify(payload) });
@@ -162,7 +162,7 @@ describe('WebSocketClient', () => {
     client.connect(onSuccess, onError);
     client.subscribeToRoute(callback);
 
-    expect(mockClient.subscribe.mock.calls[0][0]).toBe('/topic/route');
+    expect(mockClient.subscribe.mock.calls[0][0]).toBe('/user/topic/route');
     expect(typeof mockClient.subscribe.mock.calls[0][1]).toBe('function');
 
     mockClient.subscribe.mock.calls[0][1]({ body: JSON.stringify(payload) });
@@ -176,7 +176,7 @@ describe('WebSocketClient', () => {
     client.connect(onSuccess, onError);
     client.subscribeToErrorTopic(callback);
 
-    expect(mockClient.subscribe.mock.calls[0][0]).toBe('/topic/error');
+    expect(mockClient.subscribe.mock.calls[0][0]).toBe('/user/topic/error');
     expect(typeof mockClient.subscribe.mock.calls[0][1]).toBe('function');
 
     mockClient.subscribe.mock.calls[0][1]({ body: JSON.stringify(payload) });

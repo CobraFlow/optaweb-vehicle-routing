@@ -53,6 +53,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: h2
+    show-sql: true
 
 server:
   # H2
@@ -94,7 +97,7 @@ spring:
 
 keycloak:
   enabled: true
-  auth-server-url: http://localhost/auth
+  auth-server-url: http://LOcalhost/auth
   realm: SpringBootKeycloak
   resource: vehicle-routing-app
   public-client: true
@@ -111,4 +114,6 @@ spring:
 
 logging:
   level:
-    org.springframework.security: DEBUG
+#    org.springframework.security: DEBUG
+    org.optaweb.vehiclerouting.plugin.security: DEBUG
+    org.springframework.messaging: TRACE

@@ -21,9 +21,9 @@ import org.optaweb.vehiclerouting.service.location.LocationService;
 import org.optaweb.vehiclerouting.service.vehicle.VehicleRepository;
 import org.optaweb.vehiclerouting.service.vehicle.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Reloads data from repositories when the application starts.
@@ -48,9 +48,14 @@ public class ReloadService {
         this.locationService = locationService;
     }
 
-    @EventListener
-    public synchronized void reload(ApplicationStartedEvent event) {
-        vehicleRepository.vehicles().forEach(vehicleService::addVehicle);
+    @EventListener(classes = {
+            //            ApplicationStartedEvent.class,
+            ReloadEvent.class
+    })
+
+    @Transactional
+    public synchronized void reload() {
         locationRepository.locations().forEach(locationService::addLocation);
+        vehicleRepository.vehicles().forEach(vehicleService::addVehicle);
     }
 }

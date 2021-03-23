@@ -16,10 +16,13 @@
 
 package org.optaweb.vehiclerouting.plugin.websocket;
 
+import java.security.Principal;
+
 import org.optaweb.vehiclerouting.domain.RoutingPlan;
 import org.optaweb.vehiclerouting.service.route.RoutingPlanConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 class WebSocketRoutingPlanSender implements RoutingPlanConsumer {
 
-    static final String TOPIC_ROUTE = "/topic/route";
+    static String DESTINATION = "/queue/route";
 
     private final SimpMessagingTemplate webSocket;
 
@@ -39,6 +42,9 @@ class WebSocketRoutingPlanSender implements RoutingPlanConsumer {
 
     @Override
     public void consumePlan(RoutingPlan routingPlan) {
-        webSocket.convertAndSend(TOPIC_ROUTE, PortableRoutingPlanFactory.fromRoutingPlan(routingPlan));
+        Principal principal = SecurityContextHolder.getContext().getAuthentication();
+        String name = principal.getName();
+        webSocket.convertAndSendToUser(name, DESTINATION,
+                PortableRoutingPlanFactory.fromRoutingPlan(routingPlan));
     }
 }

@@ -16,12 +16,18 @@
 
 package org.optaweb.vehiclerouting;
 
+import java.util.HashMap;
+
 import org.mockito.Mockito;
 import org.optaweb.vehiclerouting.service.route.RouteListener;
+import org.springframework.beans.factory.config.CustomScopeConfigurer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.messaging.simp.SimpAttributes;
+import org.springframework.messaging.simp.SimpAttributesContextHolder;
+import org.springframework.messaging.simp.SimpSessionScope;
 
 import com.graphhopper.reader.osm.GraphHopperOSM;
 
@@ -47,5 +53,13 @@ public class TestConfig {
     @Bean
     public RouteListener routeListener() {
         return Mockito.mock(RouteListener.class);
+    }
+
+    @Bean
+    public CustomScopeConfigurer customScopeConfigurer() {
+        CustomScopeConfigurer configurer = new CustomScopeConfigurer();
+        configurer.addScope("websocket", new SimpSessionScope());
+        SimpAttributesContextHolder.setAttributes(new SimpAttributes("SessionID", new HashMap<>()));
+        return configurer;
     }
 }

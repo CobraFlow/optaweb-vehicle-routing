@@ -21,11 +21,18 @@ import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.optaweb.vehiclerouting.plugin.security.aop.TenantContext;
+
 /**
  * Distance between two locations that can be persisted.
  */
 @Entity
-class DistanceEntity {
+@FilterDef(name = "distanceFilter", parameters = { @ParamDef(name = "tenantId", type = "int") })
+@Filter(name = "distanceFilter", condition = "tenant_id = :tenantId")
+class DistanceEntity extends Base {
 
     @EmbeddedId
     private DistanceKey key;
@@ -34,9 +41,11 @@ class DistanceEntity {
 
     protected DistanceEntity() {
         // for JPA
+        super(null);
     }
 
     DistanceEntity(DistanceKey key, Long distance) {
+        super(TenantContext.getCurrentTenant());
         this.key = Objects.requireNonNull(key);
         this.distance = Objects.requireNonNull(distance);
     }

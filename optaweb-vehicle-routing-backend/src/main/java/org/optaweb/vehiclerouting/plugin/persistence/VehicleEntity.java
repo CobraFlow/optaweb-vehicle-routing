@@ -21,11 +21,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.optaweb.vehiclerouting.plugin.security.aop.TenantContext;
+
 /**
  * Persistable vehicle.
  */
 @Entity
-public class VehicleEntity {
+@FilterDef(name = "vehicleFilter", parameters = { @ParamDef(name = "tenantId", type = "int") })
+@Filter(name = "vehicleFilter", condition = "tenant_id = :tenantId")
+public class VehicleEntity extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,9 +42,11 @@ public class VehicleEntity {
 
     protected VehicleEntity() {
         // for JPA
+        super(null);
     }
 
     public VehicleEntity(long id, String name, int capacity) {
+        super(TenantContext.getCurrentTenant());
         this.id = id;
         this.name = name;
         this.capacity = capacity;

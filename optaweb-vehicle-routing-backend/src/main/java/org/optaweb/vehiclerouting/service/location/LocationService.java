@@ -40,9 +40,9 @@ public class LocationService {
     private static final Logger logger = LoggerFactory.getLogger(LocationService.class);
 
     private final LocationRepository repository;
-    private final RouteOptimizer optimizer; // TODO move to RoutingPlanService (SRP)
     private final DistanceMatrix distanceMatrix;
     private final ApplicationEventPublisher eventPublisher;
+    private final RouteOptimizer optimizer; // TODO move to RoutingPlanService (SRP)
 
     @Autowired
     LocationService(
@@ -75,6 +75,7 @@ public class LocationService {
             return;
         }
         repository.updateLocation(id, description);
+        optimizer.nopChange();
     }
 
     private boolean submitToPlanner(Location location) {

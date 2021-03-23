@@ -27,8 +27,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.optaweb.vehiclerouting.domain.RoutingPlan;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.test.context.annotation.SecurityTestExecutionListeners;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@SecurityTestExecutionListeners
 class WebSocketRoutingPlanSenderTest {
 
     @Mock
@@ -37,10 +42,12 @@ class WebSocketRoutingPlanSenderTest {
     private WebSocketRoutingPlanSender routingPlanSender;
 
     @Test
+    @WithMockUser
     void should_send_consumed_routing_plan_over_websocket() {
         routingPlanSender.consumePlan(RoutingPlan.empty());
-        verify(webSocket).convertAndSend(
-                eq(WebSocketRoutingPlanSender.TOPIC_ROUTE),
+        verify(webSocket).convertAndSendToUser(
+                eq("user"),
+                eq(WebSocketRoutingPlanSender.DESTINATION),
                 any(PortableRoutingPlan.class));
     }
 }

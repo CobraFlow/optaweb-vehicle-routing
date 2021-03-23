@@ -34,6 +34,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <enforcer.fail>false</enforcer.fail>
   </properties>
 
   <dependencies>
@@ -99,6 +100,12 @@
       <!-- RLH -->
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-messaging</artifactId>
+    </dependency>
+    <dependency>
+      <!-- RLH -->
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <!-- Testing dependencies -->

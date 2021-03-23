@@ -29,8 +29,10 @@ import org.optaweb.vehiclerouting.service.vehicle.VehicleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 public class VehicleRepositoryImpl implements VehicleRepository {
 
     private static final Logger logger = LoggerFactory.getLogger(VehicleRepositoryImpl.class);
@@ -42,8 +44,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 
     @Override
     public Vehicle createVehicle(int capacity) {
-        long id = repository.save(new VehicleEntity(0, null, capacity)).getId();
-        VehicleEntity vehicleEntity = repository.save(new VehicleEntity(id, "Vehicle " + id, capacity));
+        VehicleEntity vehicleEntity = repository.save(new VehicleEntity(0, "New Vehicle", capacity));
         Vehicle vehicle = toDomain(vehicleEntity);
         logger.info("Created vehicle {}.", vehicle);
         return vehicle;

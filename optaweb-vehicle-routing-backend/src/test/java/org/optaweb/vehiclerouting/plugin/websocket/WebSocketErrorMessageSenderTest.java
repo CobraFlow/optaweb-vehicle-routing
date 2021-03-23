@@ -16,6 +16,7 @@
 
 package org.optaweb.vehiclerouting.plugin.websocket;
 
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
@@ -24,16 +25,23 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.optaweb.vehiclerouting.service.error.ErrorMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.test.context.annotation.SecurityTestExecutionListeners;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@SecurityTestExecutionListeners
 class WebSocketErrorMessageSenderTest {
 
     @Test
+    @WithMockUser
     void should_send_consumed_message_over_websocket(@Mock SimpMessagingTemplate webSocket) {
         ErrorMessage message = ErrorMessage.of("id", "error");
         new WebSocketErrorMessageSender(webSocket).consumeMessage(message);
-        verify(webSocket).convertAndSend(
-                WebSocketErrorMessageSender.TOPIC_ERROR,
-                PortableErrorMessage.fromMessage(message));
+        verify(webSocket).convertAndSendToUser(
+                eq("user"),
+                eq(WebSocketErrorMessageSender.TOPIC_ERROR),
+                eq(PortableErrorMessage.fromMessage(message)));
     }
 }

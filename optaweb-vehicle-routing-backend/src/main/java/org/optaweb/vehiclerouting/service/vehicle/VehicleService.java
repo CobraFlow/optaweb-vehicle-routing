@@ -29,18 +29,20 @@ import org.optaweb.vehiclerouting.service.location.RouteOptimizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class VehicleService {
 
     static final int DEFAULT_VEHICLE_CAPACITY = 10;
-
-    private final RouteOptimizer optimizer;
     private final VehicleRepository vehicleRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final RouteOptimizer optimizer;
 
     @Autowired
-    public VehicleService(RouteOptimizer optimizer,
+    public VehicleService(
+            RouteOptimizer optimizer,
             VehicleRepository vehicleRepository,
             ApplicationEventPublisher eventPublisher) {
         this.optimizer = optimizer;
@@ -80,6 +82,7 @@ public class VehicleService {
                 name,
                 vehicle.capacity());
         vehicleRepository.update(vehicle);
+        optimizer.nopChange();
     }
 
     public synchronized void removeAnyVehicle() {

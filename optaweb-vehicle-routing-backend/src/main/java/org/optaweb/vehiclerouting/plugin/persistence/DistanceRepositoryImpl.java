@@ -22,8 +22,10 @@ import org.optaweb.vehiclerouting.domain.Location;
 import org.optaweb.vehiclerouting.service.distance.DistanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 class DistanceRepositoryImpl implements DistanceRepository {
 
     private final DistanceCrudRepository distanceRepository;

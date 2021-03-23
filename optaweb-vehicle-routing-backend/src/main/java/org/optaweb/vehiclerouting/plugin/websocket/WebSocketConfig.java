@@ -45,14 +45,20 @@ class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
+        String destinationPrefix = "/user/queue";
+        String brokerPrefix = "/queue";
+
         // STOMP messages whose destination header begins with /app are routed to @MessageMapping methods
         // in @Controller classes.
         // Not sure if "/topic" should be an application prefix but I couldn't get @SubscribeMapping("/route") working
         // without this.
-        registry.setApplicationDestinationPrefixes("/app", "/topic");
+        registry.setApplicationDestinationPrefixes("/app", destinationPrefix);
         // Use the built-in message broker for subscriptions and broadcasting,
         // and route messages whose destination header begins with /topic to the broker.
-        registry.enableSimpleBroker("/topic");
+
+        registry.enableSimpleBroker(brokerPrefix + "/serverInfo", brokerPrefix + "/route", brokerPrefix + "/error");
+        //        registry.enableSimpleBroker("/queue");
+        //        registry.enableSimpleBroker("/user/queue/serverInfo", "/user/queue/route", "/user/queue/error");
     }
 
     @Override

@@ -18,22 +18,17 @@ package org.optaweb.vehiclerouting.plugin.planner;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.optaweb.vehiclerouting.plugin.planner.Constants.SOLVER_CONFIG;
 import static org.optaweb.vehiclerouting.plugin.planner.domain.SolutionFactory.solutionFromVisits;
 
 import java.util.concurrent.Semaphore;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.optaweb.vehiclerouting.Profiles;
-import org.optaweb.vehiclerouting.plugin.planner.domain.DistanceMap;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningDepot;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningLocation;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningLocationFactory;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVehicle;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVehicleFactory;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVisitFactory;
-import org.optaweb.vehiclerouting.plugin.planner.domain.VehicleRoutingSolution;
+import org.optaweb.vehiclerouting.plugin.planner.domain.*;
 import org.optaweb.vehiclerouting.service.route.RouteChangedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,17 +39,18 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
+@Disabled("RLH")
 @SpringBootTest(
         properties = {
                 "optaplanner.solver-config-xml=" + SOLVER_CONFIG,
                 "optaplanner.solver.termination.best-score-limit=-1hard/-120soft"
         },
-        webEnvironment = SpringBootTest.WebEnvironment.NONE)
+        webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles(Profiles.TEST)
-class SolverManagerIntegrationTest {
+class RLHSolverControlIntegrationTest {
 
     @Autowired
-    private SolverManager solverManager;
+    private RLHSolverControl solverControl;
     @Autowired
     private RouteChangedEventSemaphore routeChangedEventSemaphore;
 
@@ -72,7 +68,7 @@ class SolverManagerIntegrationTest {
                 singletonList(vehicle),
                 new PlanningDepot(depot),
                 singletonList(PlanningVisitFactory.fromLocation(visit)));
-        solverManager.startSolver(solution);
+        solverControl.startSolver(anyString(), solution);
 
         // Waits until the solution is initialized. There is only 1 possible step => no more than 1 RouteChangedEvent.
         routeChangedEventSemaphore.waitForRouteUpdate();
@@ -84,7 +80,7 @@ class SolverManagerIntegrationTest {
         // Instead, it's actively waiting for a PFC and will restart once it arrives from the outside (the test thread).
         // If it's not in daemon mode, it returns from solve() method once the termination condition is met
         // and the following PFC attempt fails.
-        assertThatCode(() -> solverManager.changeCapacity(vehicle)).doesNotThrowAnyException();
+        assertThatCode(() -> solverControl.changeCapacity(anyString(), vehicle)).doesNotThrowAnyException();
     }
 
     static class RouteChangedEventSemaphore implements ApplicationListener<RouteChangedEvent> {

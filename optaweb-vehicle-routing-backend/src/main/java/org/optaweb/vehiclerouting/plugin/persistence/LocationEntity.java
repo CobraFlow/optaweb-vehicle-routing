@@ -25,11 +25,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.optaweb.vehiclerouting.plugin.security.aop.TenantContext;
+
 /**
  * Persistable location.
  */
 @Entity
-class LocationEntity {
+@FilterDef(name = "locationFilter", parameters = { @ParamDef(name = "tenantId", type = "int") })
+@Filter(name = "locationFilter", condition = "tenant_id = :tenantId")
+class LocationEntity extends Base {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,9 +52,11 @@ class LocationEntity {
 
     protected LocationEntity() {
         // for JPA
+        super(null);
     }
 
     LocationEntity(long id, BigDecimal latitude, BigDecimal longitude, String description) {
+        super(TenantContext.getCurrentTenant());
         this.id = id;
         this.latitude = Objects.requireNonNull(latitude);
         this.longitude = Objects.requireNonNull(longitude);
